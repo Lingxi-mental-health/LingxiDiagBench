@@ -1,0 +1,397 @@
+================================================================================
+  LingxiDiag-16K 精神科病历数据清洗全流程文档
+================================================================================
+
+核心目标：没有明显的不合理的地方
+
+数据量：16,000 条精神科电子病历
+模型：Qwen3-32B (vLLM本地部署, tensor-parallel=8)
+
+前置依赖 — 本地 vLLM 服务：
+  v0→v1, v3→v4, v4→v5, v6→v7 需要 vLLM 服务运行
+  v1→v2, v2→v3, v5→v6 是纯规则，不需要 LLM
+  启动命令：
+    vllm serve Qwen/Qwen3-32B \
+      --tensor-parallel-size 8 \
+      --max-model-len 16384 \
+      --port 8000
+
+版本链：v0 → v1 → v2 → v3 → v4 → v5 → v6 → v7
+============================
+
+v0_quality_check.py               v0 规则质检
+v0tov1_complete_history.py         v0→v1 检测空/截断现病史
+v0tov1_fix_all_problems.py         v0→v1 LLM补全现病史
+v1tov2_fill_pregnancy_for_male.py  v1→v2 男性孕产补充
+v2tov3_fix_format.py               v2→v3 格式规则修复
+v3tov4_fix_dialogue_duplicates.py  v3→v4 对话去重
+v3tov4_fix_physical_history.py     v3→v4 躯体疾病补充
+v4tov5_detect_inconsistency.py     v4→v5 跨字段检测
+v4tov5_fix_inconsistency.py        v4→v5 跨字段修复
+v5tov6_fix_personality_gender.py    v5→v6 性格矛盾+性别疾病修复
+v6tov7_detect_unreasonableness.py  v6→v7 新检测框架
+v6tov7_fix_with_anchors.py         v6→v7 锚定修复
+v6tov7_merge_results.py            v6→v7 合并修复结果+重建Patient info
+v6tov7_iterative_fix.py            v6→v7 迭代编排（200样本调试用）
+validate_step.py                   步骤间数据验证
+run_pipeline.py                    全流程串联脚本
+
+
+
+================================================================================
+  v0 — 原始数据 + 规则质检
+================================================================================
+
+数据文件：
+  emr_quality_filter_for_Lingxi/version/v0/LingxiDiag-16K_all_data.json
+
+质检脚本：v0_quality_check.py
+  - 纯规则检测，不依赖LLM
+  - 13类问题，76.0% 的记录（12,165/16,000）存在至少一个问题
+
+问题分布：
+  主诉与现病史时间矛盾:     5,696 (35.6%)
+  对话医生重复提问:         4,685 (29.3%)
+  家族史格式问题:           2,221 (13.9%)
+  对话包含不当标注:         1,922 (12.0%)
+  现病史为空或截断:         1,478 (9.2%)
+  年龄与病史时长矛盾:       1,402 (8.8%)
+  年龄字段不一致:           1,077 (6.7%)
+  婚姻状况与陪同者矛盾:       544 (3.4%)
+  年龄与学历/职业矛盾:        401 (2.5%)
+  躯体疾病史描述模糊:         354 (2.2%)
+  诊断与年龄不匹配:           346 (2.2%)
+
+
+================================================================================
+  v0 → v1 — 补充现病史（PresentIllnessHistory）
+================================================================================
+
+脚本：
+  v0tov1_complete_history.py  — 检测空/截断的现病史
+  v0tov1_fix_all_problems.py  — 用LLM根据对话补全
+
+处理逻辑：
+  1. 检测现病史状态：空（1,383条）、截断（2,191条）、正常（12,426条）
+  2. 对空/截断记录，用 Qwen3-32B 根据以下信息生成完整现病史：
+     - 医患对话（cleaned_text）—— 主要依据
+     - 年龄、性别、主诉、诊断
+  3. 生成要素：起病时间/诱因、主要症状、症状演变、伴随症状、既往诊治、目前状况
+  4. 生成3个版本（温度递增 0.3/0.45/0.6），选最优
+  5. 并发 32 workers，失败重试3次
+
+处理量：3,574 条现病史被补全
+输出：PresentIllnessHistory/LingxiDiag-16K_fixed_v3.json
+
+
+================================================================================
+  v1 → v2 — 男性孕产情况补充
+================================================================================
+
+脚本：v1tov2_fill_pregnancy_for_male.py
+
+处理逻辑：
+  1. 从女性记录中提取孕产状态分布（正则：孕产情况：XXX）
+  2. 按加权概率为男性记录随机分配孕产情况
+  3. 写入 PersonalHistory 和 Patient info 字段
+
+目的：使男女数据分布一致，避免模型训练时的性别偏差
+输出：emr_quality_filter_for_Lingxi/version/v1_fill_pregnacy_for_male/LingxiDiag-16K_all_data.json
+
+
+================================================================================
+  v2 → v3 — 格式/规则修复（不需要LLM）
+================================================================================
+
+脚本：v2tov3_fix_format.py
+
+修复规则：
+  1. 家族史重复前缀：  "家族史：家族史：" → "家族史："（2,221条）
+  2. 个人史重复词：    "内向,内向" → "内向"（正则去重）
+  3. 陪同人标准化：    "自己" → "本人"
+  4. Age字段清理：     去除"岁"后缀和空格，仅保留数字
+
+特点：纯正则/规则，无LLM调用，确定性修复
+输出：Format Restoration/LingxiDiag-16K_all_data_fixed.json
+
+
+================================================================================
+  v3 → v4 — 单字段LLM修复（对话去重 + 躯体疾病补充）
+================================================================================
+
+脚本：
+  v3tov4_fix_dialogue_duplicates.py  — 对话冗余去重
+  v3tov4_fix_physical_history.py     — 躯体疾病史补充
+
+对话去重逻辑：
+  1. 按角色标记（医生：/患者：）分行
+  2. 精确重复：同角色同文本 → 删除
+  3. 近似重复：Jaccard相似度 >= 0.6（70%字符集重叠 + 30%长度比）→ 删除
+  4. 删除上限：最多删 30% 的对话内容
+  5. 并发 32 workers，重试3次（指数退避）
+
+躯体疾病补充逻辑：
+  - 对话中提到但病历未记录的躯体疾病 → LLM提取并补充到 ImportantRelevantPhysicalIllnessHistory
+
+评测：v3tov4_fix_dialogue_duplicates.py 配套 eval_dialogue_duplicates.py
+输出：Single-Field_LLM_Restoration/LingxiDiag-16K_dialogue_fixed_v2.json
+
+
+================================================================================
+  v4 → v5 — 跨字段一致性修复
+================================================================================
+
+脚本：
+  v4tov5_detect_inconsistency.py  — LLM检测跨字段矛盾
+  v4tov5_fix_inconsistency.py     — LLM修复矛盾
+
+检测+修复的问题类型（按优先级）：
+  P0  年龄与病程数学矛盾        以对话为准，修正数值
+  P0  主诉/现病史时间差异>10倍   以对话原文为准统一
+  P1  Age字段与文本年龄不符      以对话中明确提及的为准
+  P1  婚姻状态与陪同人矛盾      综合判断，优先信任对话
+  P2  年龄与学业/工作状态不符    根据常理调整
+
+信息优先级：对话 > 现病史 > 其他字段
+并发 32 workers，重试3次（5秒指数退避）
+输出：Cross-Field_Restoration/LingxiDiag-16K_cross_field_fixed.json
+
+
+================================================================================
+  v5 → v6 — 个人史性格 + 性别疾病修复（不需要LLM）
+================================================================================
+
+脚本：v5tov6_fix_personality_gender.py
+
+修复规则（纯规则，无LLM）：
+  1. 性格矛盾：PersonalHistory 中"病前性格"同时包含"内向"和"外向"
+     → 统一改为"内向"（2,028条修复）
+  2. 性别疾病矛盾：
+     - 男性躯体疾病史中包含女性专属疾病（卵巢、子宫、巧克力囊肿、多囊）→ 删除
+     - 女性躯体疾病史中包含男性专属疾病（前列腺）→ 删除
+     - 注意：宫外孕、月经不调不算女性专属疾病（不处理）
+     （66条修复）
+
+CLI: python v5tov6_fix_personality_gender.py --input v5.json --output v6.json [--dry-run]
+
+输出：
+  Cross-Field_Restoration/LingxiDiag-16K_cross_field_fixed_v2.json
+  Cross-Field_Restoration/LingxiDiag-16K_cross_field_fixed_v3.json（v2基础上微调8条记录）
+
+
+================================================================================
+  v6 → v7 — 新检测框架 + 锚定修复（R8v2）
+================================================================================
+
+背景：
+  v6 之后仍有大量问题（200样本测试: 54.5%有问题）
+  需要更全面的检测 + 系统性的修复方案
+
+--- 步骤1：新检测框架 ---
+
+脚本：v6tov7_detect_unreasonableness.py
+
+检测范围（单字段 + 跨字段）：
+  单字段问题：
+    - 对话重复/自相矛盾/不自然
+    - 现病史内部矛盾
+    - 个人史矛盾
+    - 诊断编码不匹配
+
+  跨字段问题：
+    - 年龄矛盾（字段 vs 对话）
+    - 性别矛盾
+    - 病程时长矛盾（>=3倍差异才报告）
+    - 婚恋陪诊矛盾
+    - 身份矛盾
+    - 对话与病历矛盾
+    - 诊断与症状不符
+    - 家族史矛盾
+
+审计规则（减少误报）：
+    - 对话是最高可信信源
+    - 只报告明确事实矛盾，忽略信息缺失
+    - 口语/书面风格差异不算矛盾
+    - "中药"="中成药"不算矛盾
+    - 已婚无配偶陪同是正常情况
+    - 症状严重程度（轻度/重度）属临床判断
+    - 现病史是对话的选择性摘要
+
+支持 --resume 断点续跑
+
+--- 步骤2：迭代修复（200样本调试 R1→R8v2）---
+
+编排脚本：v6tov7_iterative_fix.py
+  循环：fix → merge → detect → 评估改善 → 下一轮
+  R1-R7：逐步优化 prompt 和修复策略
+  R8v2（round_8）：引入锚定字段机制，效果显著提升
+
+--- 步骤3：R8v2 锚定修复 ---
+
+脚本：v6tov7_fix_with_anchors.py
+
+核心设计 — 锚定字段（不可修改）：
+  - cleaned_text（医患对话）—— 绝对权威
+  - Diagnosis（诊断）
+  - DiagnosisCode（诊断编码）
+
+可修复字段（按优先级级联修复）：
+  第一步：修 PresentIllnessHistory（依据：对话 + 诊断）
+  第二步：修 ChiefComplaint（依据：对话 + 诊断 + 已修现病史）
+  第三步：独立修其他字段（Age, Gender, PersonalHistory, FamilyHistory,
+          AccompanyingPerson, ImportantRelevantPhysicalIllnessHistory,
+          DrugAllergyHistory）
+
+不可修复的问题类型（跳过）：
+  诊断编码不匹配、对话不自然、对话重复、对话自相矛盾、对话模板化、对话格式错误
+
+修复原则：
+  - 低优先级字段与高优先级矛盾时，无条件对齐高优先级
+  - 对话是绝对权威
+  - 可以删除矛盾句子，保留一致部分
+  - 症状叙述调整重心以支持诊断（不删除症状）
+
+LLM 自查步骤：
+  修复完成后 LLM 自查，纠正第一次修复的错误
+  200样本：45条被自查修正，81处修正
+
+合并策略：
+  始终从原始数据合并（非累积），防止错误传递
+  合并后重建 Patient info 字段
+
+--- 步骤4：合并修复结果 ---
+
+脚本：v6tov7_merge_results.py
+
+逻辑：
+  1. 加载原始数据 + fix_results.jsonl
+  2. 对 status=="fixed" 且 num_changes>0 的记录，用 fixed_fields 覆盖原字段
+  3. 锚定字段保护：拒绝修改 cleaned_text, Diagnosis, DiagnosisCode
+  4. 重建 Patient info = PersonalHistory|主诉:ChiefComplaint|现病史:PresentIllnessHistory|家族史:FamilyHistory
+  5. 支持 --exclude-fields 跳过指定字段
+
+CLI: python v6tov7_merge_results.py --original v6.json --fix-results fix_results.jsonl --output v7.json
+
+参数：MAX_TOKENS=4096, TEMPERATURE=0.1, REVIEW_MAX_TOKENS=2048
+
+--- 200 样本效果（round_8）---
+
+  修复前：109/200 (54.5%) 有问题
+  修复后：16/200  (8.0%)  有问题
+  改善：46.5 个百分点
+
+--- 16K 全量修复结果 ---
+
+  总处理：14,143 条（其中 13,888 修复，251 无变化，4 解析错误）
+  总变更：48,108 处
+  自查修正：13,626 条记录中 31,615 处修正
+
+  各字段变更分布：
+    PresentIllnessHistory:                 13,606
+    ChiefComplaint:                        12,774
+    PersonalHistory:                       11,185
+    ImportantRelevantPhysicalIllnessHistory: 4,581
+    AccompanyingPerson:                     4,318
+    Age:                                      818
+    FamilyHistory:                            716
+    Gender:                                    60
+    DrugAllergyHistory:                        50
+
+输出：LLM_clean_for_all/16k_log_r8v2/16k_r8v2_merged.json
+
+
+================================================================================
+  评测体系
+================================================================================
+
+1. 规则质检（v0_quality_check.py）
+   - 13 类规则检测，输出问题报告和问题记录ID
+
+2. LLM 质检（emr_quality_filter_for_Lingxi/llm_quality_check.py）
+   - 6 维度：年龄一致性、时间逻辑、人口学合理性、内容完整性、格式、诊断一致性
+   - 输出 0-10 分 + 建议（保留/需修复/建议剔除）
+
+3. 合理性评估（evalution/eval_reasonableness.py）
+   - 5 维度：字段一致性、诊断合理性、对话逻辑、常识准确、对话自然度
+   - 输出 1-5 分
+
+4. 评测框架（emr_quality_filter_for_Lingxi/evalution/）
+   - 支持 api（OpenRouter）和 vllm（本地）两种模式
+   - 可配置 prompt 模板
+
+5. EMR 质量打分（8_json/score_emr_quality.py）
+   - 从医生视角进行结构化质量评估
+
+
+================================================================================
+  数据文件版本链
+================================================================================
+
+v0  emr_quality_filter_for_Lingxi/version/v0/LingxiDiag-16K_all_data.json
+ ↓
+v1  PresentIllnessHistory/LingxiDiag-16K_fixed_v3.json
+ ↓
+v2  emr_quality_filter_for_Lingxi/version/v1_fill_pregnacy_for_male/LingxiDiag-16K_all_data.json
+ ↓
+v3  Format Restoration/LingxiDiag-16K_all_data_fixed.json
+ ↓
+v4  Single-Field_LLM_Restoration/LingxiDiag-16K_dialogue_fixed_v2.json
+ ↓
+v5  Cross-Field_Restoration/LingxiDiag-16K_cross_field_fixed.json
+ ↓
+v6  Cross-Field_Restoration/LingxiDiag-16K_cross_field_fixed_v2.json → v3.json
+ ↓
+v7  LLM_clean_for_all/16k_log_r8v2/16k_r8v2_merged.json  （当前最新版本）
+
+
+================================================================================
+  流水线工具
+================================================================================
+
+run_pipeline.py — 全流程串联脚本
+  用法：
+    # 从 v0 跑完整流程
+    python run_pipeline.py --v0-input raw.json --output-dir ./pipeline_output
+
+    # 从某个中间版本开始
+    python run_pipeline.py --start-from v3tov4 --input v3.json --output-dir ./output
+
+    # 只跑某一步
+    python run_pipeline.py --only v6tov7 --input v6.json --output-dir ./output
+
+  参数：--concurrent (LLM并发数, 默认32)  --no-validate (跳过步骤间验证)
+
+validate_step.py — 步骤间数据验证
+  检查项：
+    - 记录数（默认 16,000）
+    - patient_id 唯一性
+    - 必要字段存在性
+    - Gender 分布合理性
+    - Age 范围合理性
+    - 锚定字段完整性（需指定 --baseline）
+
+  用法：
+    python validate_step.py --input v7.json
+    python validate_step.py --input v7.json --baseline v6.json --check-anchors
+
+
+================================================================================
+  脚本索引（data/ 目录下）
+================================================================================
+
+v0_quality_check.py               v0 规则质检
+v0tov1_complete_history.py         v0→v1 检测空/截断现病史
+v0tov1_fix_all_problems.py         v0→v1 LLM补全现病史
+v1tov2_fill_pregnancy_for_male.py  v1→v2 男性孕产补充
+v2tov3_fix_format.py               v2→v3 格式规则修复
+v3tov4_fix_dialogue_duplicates.py  v3→v4 对话去重
+v3tov4_fix_physical_history.py     v3→v4 躯体疾病补充
+v4tov5_detect_inconsistency.py     v4→v5 跨字段检测
+v4tov5_fix_inconsistency.py        v4→v5 跨字段修复
+v5tov6_fix_personality_gender.py    v5→v6 性格矛盾+性别疾病修复
+v6tov7_detect_unreasonableness.py  v6→v7 新检测框架
+v6tov7_fix_with_anchors.py         v6→v7 锚定修复
+v6tov7_merge_results.py            v6→v7 合并修复结果+重建Patient info
+v6tov7_iterative_fix.py            v6→v7 迭代编排（200样本调试用）
+validate_step.py                   步骤间数据验证
+run_pipeline.py                    全流程串联脚本

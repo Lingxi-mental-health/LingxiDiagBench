@@ -1,0 +1,20 @@
+# EMR Generation - 虚拟病例生成项目依赖
+
+# Core dependencies
+pydantic>=2.0.0
+openai>=1.0.0
+httpx>=0.25.0
+
+# NLP and text processing
+jieba>=0.42.1
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Utilities
+tqdm>=4.65.0
+python-dotenv>=1.0.0
+
+# Optional: for better JSON handling
+orjson>=3.9.0

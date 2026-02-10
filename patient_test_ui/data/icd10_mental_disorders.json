@@ -1,0 +1,1566 @@
+[
+  {
+    "icd_code": "F00.0",
+    "diagnosis": "阿尔茨海默病性痴呆，早发性"
+  },
+  {
+    "icd_code": "F00.1",
+    "diagnosis": "阿尔茨海默病性痴呆，晚发性"
+  },
+  {
+    "icd_code": "F00.2",
+    "diagnosis": "阿尔茨海默病性痴呆，非典型或混合性"
+  },
+  {
+    "icd_code": "F00.9",
+    "diagnosis": "阿尔茨海默病性痴呆，未特指"
+  },
+  {
+    "icd_code": "F01.0",
+    "diagnosis": "急性发病的血管性痴呆"
+  },
+  {
+    "icd_code": "F01.1",
+    "diagnosis": "多发梗死性痴呆"
+  },
+  {
+    "icd_code": "F01.2",
+    "diagnosis": "皮质下血管性痴呆"
+  },
+  {
+    "icd_code": "F01.3",
+    "diagnosis": "混合性皮质和皮质下血管性痴呆"
+  },
+  {
+    "icd_code": "F01.8",
+    "diagnosis": "其他血管性痴呆"
+  },
+  {
+    "icd_code": "F01.9",
+    "diagnosis": "血管性痴呆，未特指"
+  },
+  {
+    "icd_code": "F02.0",
+    "diagnosis": "Pick病性痴呆"
+  },
+  {
+    "icd_code": "F02.1",
+    "diagnosis": "Creutzfeldt-Jakob病性痴呆"
+  },
+  {
+    "icd_code": "F02.2",
+    "diagnosis": "Huntington病性痴呆"
+  },
+  {
+    "icd_code": "F02.3",
+    "diagnosis": "Parkinson病性痴呆"
+  },
+  {
+    "icd_code": "F02.4",
+    "diagnosis": "HIV病性痴呆"
+  },
+  {
+    "icd_code": "F02.8",
+    "diagnosis": "其他特指疾病引起的痴呆"
+  },
+  {
+    "icd_code": "F03",
+    "diagnosis": "未特指的痴呆"
+  },
+  {
+    "icd_code": "F04",
+    "diagnosis": "器质性遗忘综合征，非酒精和其他精神活性物质所致"
+  },
+  {
+    "icd_code": "F05.0",
+    "diagnosis": "不伴痴呆的谵妄"
+  },
+  {
+    "icd_code": "F05.1",
+    "diagnosis": "伴痴呆的谵妄"
+  },
+  {
+    "icd_code": "F05.8",
+    "diagnosis": "其他谵妄"
+  },
+  {
+    "icd_code": "F05.9",
+    "diagnosis": "谵妄，未特指"
+  },
+  {
+    "icd_code": "F06.0",
+    "diagnosis": "器质性幻觉症"
+  },
+  {
+    "icd_code": "F06.1",
+    "diagnosis": "器质性紧张症样障碍"
+  },
+  {
+    "icd_code": "F06.2",
+    "diagnosis": "器质性妄想性[精神分裂症样]障碍"
+  },
+  {
+    "icd_code": "F06.3",
+    "diagnosis": "器质性心境[情感性]障碍"
+  },
+  {
+    "icd_code": "F06.4",
+    "diagnosis": "器质性焦虑障碍"
+  },
+  {
+    "icd_code": "F06.5",
+    "diagnosis": "器质性分离性障碍"
+  },
+  {
+    "icd_code": "F06.6",
+    "diagnosis": "器质性情绪不稳障碍"
+  },
+  {
+    "icd_code": "F06.7",
+    "diagnosis": "轻度认知障碍"
+  },
+  {
+    "icd_code": "F06.8",
+    "diagnosis": "其他特指的由于脑损害和脑功能障碍以及躯体疾病所致的精神障碍"
+  },
+  {
+    "icd_code": "F06.9",
+    "diagnosis": "未特指的由于脑损害和脑功能障碍以及躯体疾病所致的精神障碍"
+  },
+  {
+    "icd_code": "F07.0",
+    "diagnosis": "器质性人格障碍"
+  },
+  {
+    "icd_code": "F07.1",
+    "diagnosis": "脑炎后综合征"
+  },
+  {
+    "icd_code": "F07.2",
+    "diagnosis": "脑震荡后综合征"
+  },
+  {
+    "icd_code": "F07.8",
+    "diagnosis": "其他器质性人格和行为障碍"
+  },
+  {
+    "icd_code": "F07.9",
+    "diagnosis": "未特指的器质性人格和行为障碍"
+  },
+  {
+    "icd_code": "F08",
+    "diagnosis": "其他器质性精神障碍"
+  },
+  {
+    "icd_code": "F09",
+    "diagnosis": "未特指的器质性或症状性精神障碍"
+  },
+  {
+    "icd_code": "F10.0",
+    "diagnosis": "使用酒精的急性中毒"
+  },
+  {
+    "icd_code": "F10.1",
+    "diagnosis": "使用酒精的有害使用"
+  },
+  {
+    "icd_code": "F10.2",
+    "diagnosis": "使用酒精的依赖综合征"
+  },
+  {
+    "icd_code": "F10.3",
+    "diagnosis": "使用酒精的戒断状态"
+  },
+  {
+    "icd_code": "F10.4",
+    "diagnosis": "使用酒精的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F10.5",
+    "diagnosis": "使用酒精的精神病性障碍"
+  },
+  {
+    "icd_code": "F10.6",
+    "diagnosis": "使用酒精的遗忘综合征"
+  },
+  {
+    "icd_code": "F10.7",
+    "diagnosis": "使用酒精的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F10.8",
+    "diagnosis": "使用酒精的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F10.9",
+    "diagnosis": "使用酒精的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F11.0",
+    "diagnosis": "使用阿片类的急性中毒"
+  },
+  {
+    "icd_code": "F11.1",
+    "diagnosis": "使用阿片类的有害使用"
+  },
+  {
+    "icd_code": "F11.2",
+    "diagnosis": "使用阿片类的依赖综合征"
+  },
+  {
+    "icd_code": "F11.3",
+    "diagnosis": "使用阿片类的戒断状态"
+  },
+  {
+    "icd_code": "F11.4",
+    "diagnosis": "使用阿片类的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F11.5",
+    "diagnosis": "使用阿片类的精神病性障碍"
+  },
+  {
+    "icd_code": "F11.6",
+    "diagnosis": "使用阿片类的遗忘综合征"
+  },
+  {
+    "icd_code": "F11.7",
+    "diagnosis": "使用阿片类的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F11.8",
+    "diagnosis": "使用阿片类的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F11.9",
+    "diagnosis": "使用阿片类的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F12.0",
+    "diagnosis": "使用类大麻类的急性中毒"
+  },
+  {
+    "icd_code": "F12.1",
+    "diagnosis": "使用类大麻类的有害使用"
+  },
+  {
+    "icd_code": "F12.2",
+    "diagnosis": "使用类大麻类的依赖综合征"
+  },
+  {
+    "icd_code": "F12.3",
+    "diagnosis": "使用类大麻类的戒断状态"
+  },
+  {
+    "icd_code": "F12.4",
+    "diagnosis": "使用类大麻类的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F12.5",
+    "diagnosis": "使用类大麻类的精神病性障碍"
+  },
+  {
+    "icd_code": "F12.6",
+    "diagnosis": "使用类大麻类的遗忘综合征"
+  },
+  {
+    "icd_code": "F12.7",
+    "diagnosis": "使用类大麻类的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F12.8",
+    "diagnosis": "使用类大麻类的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F12.9",
+    "diagnosis": "使用类大麻类的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F13.0",
+    "diagnosis": "使用镇静剂或催眠药的急性中毒"
+  },
+  {
+    "icd_code": "F13.1",
+    "diagnosis": "使用镇静剂或催眠药的有害使用"
+  },
+  {
+    "icd_code": "F13.2",
+    "diagnosis": "使用镇静剂或催眠药的依赖综合征"
+  },
+  {
+    "icd_code": "F13.3",
+    "diagnosis": "使用镇静剂或催眠药的戒断状态"
+  },
+  {
+    "icd_code": "F13.4",
+    "diagnosis": "使用镇静剂或催眠药的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F13.5",
+    "diagnosis": "使用镇静剂或催眠药的精神病性障碍"
+  },
+  {
+    "icd_code": "F13.6",
+    "diagnosis": "使用镇静剂或催眠药的遗忘综合征"
+  },
+  {
+    "icd_code": "F13.7",
+    "diagnosis": "使用镇静剂或催眠药的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F13.8",
+    "diagnosis": "使用镇静剂或催眠药的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F13.9",
+    "diagnosis": "使用镇静剂或催眠药的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F14.0",
+    "diagnosis": "使用可卡因的急性中毒"
+  },
+  {
+    "icd_code": "F14.1",
+    "diagnosis": "使用可卡因的有害使用"
+  },
+  {
+    "icd_code": "F14.2",
+    "diagnosis": "使用可卡因的依赖综合征"
+  },
+  {
+    "icd_code": "F14.3",
+    "diagnosis": "使用可卡因的戒断状态"
+  },
+  {
+    "icd_code": "F14.4",
+    "diagnosis": "使用可卡因的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F14.5",
+    "diagnosis": "使用可卡因的精神病性障碍"
+  },
+  {
+    "icd_code": "F14.6",
+    "diagnosis": "使用可卡因的遗忘综合征"
+  },
+  {
+    "icd_code": "F14.7",
+    "diagnosis": "使用可卡因的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F14.8",
+    "diagnosis": "使用可卡因的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F14.9",
+    "diagnosis": "使用可卡因的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F15.0",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的急性中毒"
+  },
+  {
+    "icd_code": "F15.1",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的有害使用"
+  },
+  {
+    "icd_code": "F15.2",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的依赖综合征"
+  },
+  {
+    "icd_code": "F15.3",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的戒断状态"
+  },
+  {
+    "icd_code": "F15.4",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F15.5",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的精神病性障碍"
+  },
+  {
+    "icd_code": "F15.6",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的遗忘综合征"
+  },
+  {
+    "icd_code": "F15.7",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F15.8",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F15.9",
+    "diagnosis": "使用其他兴奋剂(包括咖啡因)的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F16.0",
+    "diagnosis": "使用致幻剂的急性中毒"
+  },
+  {
+    "icd_code": "F16.1",
+    "diagnosis": "使用致幻剂的有害使用"
+  },
+  {
+    "icd_code": "F16.2",
+    "diagnosis": "使用致幻剂的依赖综合征"
+  },
+  {
+    "icd_code": "F16.3",
+    "diagnosis": "使用致幻剂的戒断状态"
+  },
+  {
+    "icd_code": "F16.4",
+    "diagnosis": "使用致幻剂的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F16.5",
+    "diagnosis": "使用致幻剂的精神病性障碍"
+  },
+  {
+    "icd_code": "F16.6",
+    "diagnosis": "使用致幻剂的遗忘综合征"
+  },
+  {
+    "icd_code": "F16.7",
+    "diagnosis": "使用致幻剂的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F16.8",
+    "diagnosis": "使用致幻剂的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F16.9",
+    "diagnosis": "使用致幻剂的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F17.0",
+    "diagnosis": "使用烟草的急性中毒"
+  },
+  {
+    "icd_code": "F17.1",
+    "diagnosis": "使用烟草的有害使用"
+  },
+  {
+    "icd_code": "F17.2",
+    "diagnosis": "使用烟草的依赖综合征"
+  },
+  {
+    "icd_code": "F17.3",
+    "diagnosis": "使用烟草的戒断状态"
+  },
+  {
+    "icd_code": "F17.4",
+    "diagnosis": "使用烟草的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F17.5",
+    "diagnosis": "使用烟草的精神病性障碍"
+  },
+  {
+    "icd_code": "F17.6",
+    "diagnosis": "使用烟草的遗忘综合征"
+  },
+  {
+    "icd_code": "F17.7",
+    "diagnosis": "使用烟草的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F17.8",
+    "diagnosis": "使用烟草的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F17.9",
+    "diagnosis": "使用烟草的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F18.0",
+    "diagnosis": "使用挥发性溶剂的急性中毒"
+  },
+  {
+    "icd_code": "F18.1",
+    "diagnosis": "使用挥发性溶剂的有害使用"
+  },
+  {
+    "icd_code": "F18.2",
+    "diagnosis": "使用挥发性溶剂的依赖综合征"
+  },
+  {
+    "icd_code": "F18.3",
+    "diagnosis": "使用挥发性溶剂的戒断状态"
+  },
+  {
+    "icd_code": "F18.4",
+    "diagnosis": "使用挥发性溶剂的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F18.5",
+    "diagnosis": "使用挥发性溶剂的精神病性障碍"
+  },
+  {
+    "icd_code": "F18.6",
+    "diagnosis": "使用挥发性溶剂的遗忘综合征"
+  },
+  {
+    "icd_code": "F18.7",
+    "diagnosis": "使用挥发性溶剂的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F18.8",
+    "diagnosis": "使用挥发性溶剂的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F18.9",
+    "diagnosis": "使用挥发性溶剂的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F19.0",
+    "diagnosis": "使用多种药物和其他精神活性物质的急性中毒"
+  },
+  {
+    "icd_code": "F19.1",
+    "diagnosis": "使用多种药物和其他精神活性物质的有害使用"
+  },
+  {
+    "icd_code": "F19.2",
+    "diagnosis": "使用多种药物和其他精神活性物质的依赖综合征"
+  },
+  {
+    "icd_code": "F19.3",
+    "diagnosis": "使用多种药物和其他精神活性物质的戒断状态"
+  },
+  {
+    "icd_code": "F19.4",
+    "diagnosis": "使用多种药物和其他精神活性物质的戒断状态伴谵妄"
+  },
+  {
+    "icd_code": "F19.5",
+    "diagnosis": "使用多种药物和其他精神活性物质的精神病性障碍"
+  },
+  {
+    "icd_code": "F19.6",
+    "diagnosis": "使用多种药物和其他精神活性物质的遗忘综合征"
+  },
+  {
+    "icd_code": "F19.7",
+    "diagnosis": "使用多种药物和其他精神活性物质的残留性和迟发性精神病性障碍"
+  },
+  {
+    "icd_code": "F19.8",
+    "diagnosis": "使用多种药物和其他精神活性物质的其他精神和行为障碍"
+  },
+  {
+    "icd_code": "F19.9",
+    "diagnosis": "使用多种药物和其他精神活性物质的未特指的精神和行为障碍"
+  },
+  {
+    "icd_code": "F20.0",
+    "diagnosis": "偏执型精神分裂症"
+  },
+  {
+    "icd_code": "F20.1",
+    "diagnosis": "青春型精神分裂症"
+  },
+  {
+    "icd_code": "F20.2",
+    "diagnosis": "紧张型精神分裂症"
+  },
+  {
+    "icd_code": "F20.3",
+    "diagnosis": "未分化型精神分裂症"
+  },
+  {
+    "icd_code": "F20.4",
+    "diagnosis": "精神分裂症后抑郁"
+  },
+  {
+    "icd_code": "F20.5",
+    "diagnosis": "残留型精神分裂症"
+  },
+  {
+    "icd_code": "F20.6",
+    "diagnosis": "单纯型精神分裂症"
+  },
+  {
+    "icd_code": "F20.8",
+    "diagnosis": "其他精神分裂症"
+  },
+  {
+    "icd_code": "F20.9",
+    "diagnosis": "精神分裂症，未特指"
+  },
+  {
+    "icd_code": "F21",
+    "diagnosis": "分裂型障碍"
+  },
+  {
+    "icd_code": "F22.0",
+    "diagnosis": "妄想性障碍"
+  },
+  {
+    "icd_code": "F22.8",
+    "diagnosis": "其他持续性妄想性障碍"
+  },
+  {
+    "icd_code": "F22.9",
+    "diagnosis": "持续性妄想性障碍，未特指"
+  },
+  {
+    "icd_code": "F23.0",
+    "diagnosis": "急性多形性精神病性障碍，不伴精神分裂症症状"
+  },
+  {
+    "icd_code": "F23.1",
+    "diagnosis": "急性多形性精神病性障碍，伴精神分裂症症状"
+  },
+  {
+    "icd_code": "F23.2",
+    "diagnosis": "急性精神分裂症样精神病性障碍"
+  },
+  {
+    "icd_code": "F23.3",
+    "diagnosis": "其他急性主要妄想性精神病性障碍"
+  },
+  {
+    "icd_code": "F23.8",
+    "diagnosis": "其他急性和短暂性精神病性障碍"
+  },
+  {
+    "icd_code": "F23.9",
+    "diagnosis": "急性和短暂性精神病性障碍，未特指"
+  },
+  {
+    "icd_code": "F24",
+    "diagnosis": "感应性妄想性障碍"
+  },
+  {
+    "icd_code": "F25.0",
+    "diagnosis": "分裂情感性障碍，躁狂型"
+  },
+  {
+    "icd_code": "F25.1",
+    "diagnosis": "分裂情感性障碍，抑郁型"
+  },
+  {
+    "icd_code": "F25.2",
+    "diagnosis": "分裂情感性障碍，混合型"
+  },
+  {
+    "icd_code": "F25.8",
+    "diagnosis": "其他分裂情感性障碍"
+  },
+  {
+    "icd_code": "F25.9",
+    "diagnosis": "分裂情感性障碍，未特指"
+  },
+  {
+    "icd_code": "F28",
+    "diagnosis": "其他非器质性精神病性障碍"
+  },
+  {
+    "icd_code": "F29",
+    "diagnosis": "未特指的非器质性精神病"
+  },
+  {
+    "icd_code": "F30.0",
+    "diagnosis": "轻躁狂"
+  },
+  {
+    "icd_code": "F30.1",
+    "diagnosis": "不伴精神病性症状的躁狂"
+  },
+  {
+    "icd_code": "F30.2",
+    "diagnosis": "伴精神病性症状的躁狂"
+  },
+  {
+    "icd_code": "F30.8",
+    "diagnosis": "其他躁狂发作"
+  },
+  {
+    "icd_code": "F30.9",
+    "diagnosis": "躁狂发作，未特指"
+  },
+  {
+    "icd_code": "F31.0",
+    "diagnosis": "双相情感障碍，目前为轻躁狂发作"
+  },
+  {
+    "icd_code": "F31.1",
+    "diagnosis": "双相情感障碍，目前为不伴精神病性症状的躁狂发作"
+  },
+  {
+    "icd_code": "F31.2",
+    "diagnosis": "双相情感障碍，目前为伴精神病性症状的躁狂发作"
+  },
+  {
+    "icd_code": "F31.3",
+    "diagnosis": "双相情感障碍，目前为轻度或中度抑郁发作"
+  },
+  {
+    "icd_code": "F31.4",
+    "diagnosis": "双相情感障碍，目前为不伴精神病性症状的重度抑郁发作"
+  },
+  {
+    "icd_code": "F31.5",
+    "diagnosis": "双相情感障碍，目前为伴精神病性症状的重度抑郁发作"
+  },
+  {
+    "icd_code": "F31.6",
+    "diagnosis": "双相情感障碍，目前为混合性发作"
+  },
+  {
+    "icd_code": "F31.7",
+    "diagnosis": "双相情感障碍，目前为缓解期"
+  },
+  {
+    "icd_code": "F31.8",
+    "diagnosis": "其他双相情感障碍"
+  },
+  {
+    "icd_code": "F31.9",
+    "diagnosis": "双相情感障碍，未特指"
+  },
+  {
+    "icd_code": "F32.0",
+    "diagnosis": "轻度抑郁发作"
+  },
+  {
+    "icd_code": "F32.1",
+    "diagnosis": "中度抑郁发作"
+  },
+  {
+    "icd_code": "F32.2",
+    "diagnosis": "不伴精神病性症状的重度抑郁发作"
+  },
+  {
+    "icd_code": "F32.3",
+    "diagnosis": "伴精神病性症状的重度抑郁发作"
+  },
+  {
+    "icd_code": "F32.8",
+    "diagnosis": "其他抑郁发作"
+  },
+  {
+    "icd_code": "F32.9",
+    "diagnosis": "抑郁发作，未特指"
+  },
+  {
+    "icd_code": "F33.0",
+    "diagnosis": "复发性抑郁障碍，目前为轻度发作"
+  },
+  {
+    "icd_code": "F33.1",
+    "diagnosis": "复发性抑郁障碍，目前为中度发作"
+  },
+  {
+    "icd_code": "F33.2",
+    "diagnosis": "复发性抑郁障碍，目前为不伴精神病性症状的重度发作"
+  },
+  {
+    "icd_code": "F33.3",
+    "diagnosis": "复发性抑郁障碍，目前为伴精神病性症状的重度发作"
+  },
+  {
+    "icd_code": "F33.4",
+    "diagnosis": "复发性抑郁障碍，目前为缓解期"
+  },
+  {
+    "icd_code": "F33.8",
+    "diagnosis": "其他复发性抑郁障碍"
+  },
+  {
+    "icd_code": "F33.9",
+    "diagnosis": "复发性抑郁障碍，未特指"
+  },
+  {
+    "icd_code": "F34.0",
+    "diagnosis": "环性心境障碍"
+  },
+  {
+    "icd_code": "F34.1",
+    "diagnosis": "恶劣心境障碍"
+  },
+  {
+    "icd_code": "F34.8",
+    "diagnosis": "其他持续性心境[情感性]障碍"
+  },
+  {
+    "icd_code": "F34.9",
+    "diagnosis": "持续性心境[情感性]障碍，未特指"
+  },
+  {
+    "icd_code": "F38.0",
+    "diagnosis": "其他单次心境[情感性]障碍"
+  },
+  {
+    "icd_code": "F38.1",
+    "diagnosis": "其他复发性心境[情感性]障碍"
+  },
+  {
+    "icd_code": "F38.8",
+    "diagnosis": "其他特指的心境[情感性]障碍"
+  },
+  {
+    "icd_code": "F39",
+    "diagnosis": "未特指的心境[情感性]障碍"
+  },
+  {
+    "icd_code": "F40.0",
+    "diagnosis": "广场恐惧症"
+  },
+  {
+    "icd_code": "F40.1",
+    "diagnosis": "社交恐惧症"
+  },
+  {
+    "icd_code": "F40.2",
+    "diagnosis": "特定的[单纯性]恐惧症"
+  },
+  {
+    "icd_code": "F40.8",
+    "diagnosis": "其他恐惧性焦虑障碍"
+  },
+  {
+    "icd_code": "F40.9",
+    "diagnosis": "恐惧性焦虑障碍，未特指"
+  },
+  {
+    "icd_code": "F41.0",
+    "diagnosis": "惊恐障碍[阵发性焦虑]"
+  },
+  {
+    "icd_code": "F41.1",
+    "diagnosis": "广泛性焦虑障碍"
+  },
+  {
+    "icd_code": "F41.2",
+    "diagnosis": "混合性焦虑和抑郁障碍"
+  },
+  {
+    "icd_code": "F41.3",
+    "diagnosis": "其他混合性焦虑障碍"
+  },
+  {
+    "icd_code": "F41.8",
+    "diagnosis": "其他特指的焦虑障碍"
+  },
+  {
+    "icd_code": "F41.9",
+    "diagnosis": "焦虑障碍，未特指"
+  },
+  {
+    "icd_code": "F42.0",
+    "diagnosis": "主要为强迫思维或穷思竭虑"
+  },
+  {
+    "icd_code": "F42.1",
+    "diagnosis": "主要为强迫行为[强迫性仪式]"
+  },
+  {
+    "icd_code": "F42.2",
+    "diagnosis": "混合性强迫思维和行为"
+  },
+  {
+    "icd_code": "F42.8",
+    "diagnosis": "其他强迫性障碍"
+  },
+  {
+    "icd_code": "F42.9",
+    "diagnosis": "强迫性障碍，未特指"
+  },
+  {
+    "icd_code": "F43.0",
+    "diagnosis": "急性应激反应"
+  },
+  {
+    "icd_code": "F43.1",
+    "diagnosis": "创伤后应激障碍"
+  },
+  {
+    "icd_code": "F43.2",
+    "diagnosis": "适应障碍"
+  },
+  {
+    "icd_code": "F43.8",
+    "diagnosis": "其他严重应激反应"
+  },
+  {
+    "icd_code": "F43.9",
+    "diagnosis": "严重应激反应，未特指"
+  },
+  {
+    "icd_code": "F44.0",
+    "diagnosis": "分离性遗忘"
+  },
+  {
+    "icd_code": "F44.1",
+    "diagnosis": "分离性神游"
+  },
+  {
+    "icd_code": "F44.2",
+    "diagnosis": "分离性木僵"
+  },
+  {
+    "icd_code": "F44.3",
+    "diagnosis": "恍惚和附体障碍"
+  },
+  {
+    "icd_code": "F44.4",
+    "diagnosis": "分离性运动障碍"
+  },
+  {
+    "icd_code": "F44.5",
+    "diagnosis": "分离性惊厥"
+  },
+  {
+    "icd_code": "F44.6",
+    "diagnosis": "分离性感觉缺失和感觉障碍"
+  },
+  {
+    "icd_code": "F44.7",
+    "diagnosis": "混合性分离性[转换性]障碍"
+  },
+  {
+    "icd_code": "F44.8",
+    "diagnosis": "其他分离性[转换性]障碍"
+  },
+  {
+    "icd_code": "F44.9",
+    "diagnosis": "分离性[转换性]障碍，未特指"
+  },
+  {
+    "icd_code": "F45.0",
+    "diagnosis": "躯体化障碍"
+  },
+  {
+    "icd_code": "F45.1",
+    "diagnosis": "未分化的躯体形式障碍"
+  },
+  {
+    "icd_code": "F45.2",
+    "diagnosis": "疑病障碍"
+  },
+  {
+    "icd_code": "F45.3",
+    "diagnosis": "躯体形式的自主神经功能紊乱"
+  },
+  {
+    "icd_code": "F45.4",
+    "diagnosis": "持续性躯体形式疼痛障碍"
+  },
+  {
+    "icd_code": "F45.8",
+    "diagnosis": "其他躯体形式障碍"
+  },
+  {
+    "icd_code": "F45.9",
+    "diagnosis": "躯体形式障碍，未特指"
+  },
+  {
+    "icd_code": "F48.0",
+    "diagnosis": "神经衰弱"
+  },
+  {
+    "icd_code": "F48.1",
+    "diagnosis": "人格解体-现实解体综合征"
+  },
+  {
+    "icd_code": "F48.8",
+    "diagnosis": "其他特指的神经症性障碍"
+  },
+  {
+    "icd_code": "F48.9",
+    "diagnosis": "神经症性障碍，未特指"
+  },
+  {
+    "icd_code": "F50.0",
+    "diagnosis": "神经性厌食"
+  },
+  {
+    "icd_code": "F50.1",
+    "diagnosis": "非典型神经性厌食"
+  },
+  {
+    "icd_code": "F50.2",
+    "diagnosis": "神经性贪食"
+  },
+  {
+    "icd_code": "F50.3",
+    "diagnosis": "非典型神经性贪食"
+  },
+  {
+    "icd_code": "F50.4",
+    "diagnosis": "与其他心理障碍相关的暴食"
+  },
+  {
+    "icd_code": "F50.5",
+    "diagnosis": "与其他心理障碍相关的呕吐"
+  },
+  {
+    "icd_code": "F50.8",
+    "diagnosis": "其他进食障碍"
+  },
+  {
+    "icd_code": "F50.9",
+    "diagnosis": "进食障碍，未特指"
+  },
+  {
+    "icd_code": "F51.0",
+    "diagnosis": "非器质性失眠症"
+  },
+  {
+    "icd_code": "F51.1",
+    "diagnosis": "非器质性嗜睡症"
+  },
+  {
+    "icd_code": "F51.2",
+    "diagnosis": "非器质性睡眠-觉醒时间表障碍"
+  },
+  {
+    "icd_code": "F51.3",
+    "diagnosis": "梦游症[睡行症]"
+  },
+  {
+    "icd_code": "F51.4",
+    "diagnosis": "睡惊症[夜惊症]"
+  },
+  {
+    "icd_code": "F51.5",
+    "diagnosis": "梦魇"
+  },
+  {
+    "icd_code": "F51.8",
+    "diagnosis": "其他非器质性睡眠障碍"
+  },
+  {
+    "icd_code": "F51.9",
+    "diagnosis": "非器质性睡眠障碍，未特指"
+  },
+  {
+    "icd_code": "F52.0",
+    "diagnosis": "缺乏或丧失性欲"
+  },
+  {
+    "icd_code": "F52.1",
+    "diagnosis": "性厌恶和缺乏性享受"
+  },
+  {
+    "icd_code": "F52.2",
+    "diagnosis": "生殖器反应衰竭"
+  },
+  {
+    "icd_code": "F52.3",
+    "diagnosis": "性高潮功能障碍"
+  },
+  {
+    "icd_code": "F52.4",
+    "diagnosis": "早泄"
+  },
+  {
+    "icd_code": "F52.5",
+    "diagnosis": "非器质性阴道痉挛"
+  },
+  {
+    "icd_code": "F52.6",
+    "diagnosis": "非器质性性交疼痛"
+  },
+  {
+    "icd_code": "F52.7",
+    "diagnosis": "过强性欲"
+  },
+  {
+    "icd_code": "F52.8",
+    "diagnosis": "其他性功能障碍，非器质性"
+  },
+  {
+    "icd_code": "F52.9",
+    "diagnosis": "未特指的性功能障碍，非器质性"
+  },
+  {
+    "icd_code": "F53.0",
+    "diagnosis": "产褥期轻度精神和行为障碍，不可归类在其他地方者"
+  },
+  {
+    "icd_code": "F53.1",
+    "diagnosis": "产褥期重度精神和行为障碍，不可归类在其他地方者"
+  },
+  {
+    "icd_code": "F53.8",
+    "diagnosis": "其他产褥期精神和行为障碍，不可归类在其他地方者"
+  },
+  {
+    "icd_code": "F53.9",
+    "diagnosis": "产褥期精神障碍，未特指"
+  },
+  {
+    "icd_code": "F54",
+    "diagnosis": "与他处归类的障碍或疾病有关的心理和行为因素"
+  },
+  {
+    "icd_code": "F55",
+    "diagnosis": "非依赖性产生物质的滥用"
+  },
+  {
+    "icd_code": "F58",
+    "diagnosis": "其他与生理紊乱和躯体因素有关的行为综合征"
+  },
+  {
+    "icd_code": "F59",
+    "diagnosis": "未特指的与生理紊乱和躯体因素有关的行为综合征"
+  },
+  {
+    "icd_code": "F60.0",
+    "diagnosis": "偏执性人格障碍"
+  },
+  {
+    "icd_code": "F60.1",
+    "diagnosis": "分裂样人格障碍"
+  },
+  {
+    "icd_code": "F60.2",
+    "diagnosis": "反社会性人格障碍"
+  },
+  {
+    "icd_code": "F60.3",
+    "diagnosis": "情绪不稳定性人格障碍"
+  },
+  {
+    "icd_code": "F60.4",
+    "diagnosis": "表演性人格障碍"
+  },
+  {
+    "icd_code": "F60.5",
+    "diagnosis": "强迫性人格障碍"
+  },
+  {
+    "icd_code": "F60.6",
+    "diagnosis": "焦虑性[回避性]人格障碍"
+  },
+  {
+    "icd_code": "F60.7",
+    "diagnosis": "依赖性人格障碍"
+  },
+  {
+    "icd_code": "F60.8",
+    "diagnosis": "其他特定的人格障碍"
+  },
+  {
+    "icd_code": "F60.9",
+    "diagnosis": "人格障碍，未特指"
+  },
+  {
+    "icd_code": "F61",
+    "diagnosis": "混合性和其他人格障碍"
+  },
+  {
+    "icd_code": "F62.0",
+    "diagnosis": "灾难性经历后持久的人格改变"
+  },
+  {
+    "icd_code": "F62.1",
+    "diagnosis": "精神疾病后持久的人格改变"
+  },
+  {
+    "icd_code": "F62.8",
+    "diagnosis": "其他持久的人格改变"
+  },
+  {
+    "icd_code": "F62.9",
+    "diagnosis": "持久的人格改变，未特指"
+  },
+  {
+    "icd_code": "F63.0",
+    "diagnosis": "病理性赌博"
+  },
+  {
+    "icd_code": "F63.1",
+    "diagnosis": "病理性纵火[纵火癖]"
+  },
+  {
+    "icd_code": "F63.2",
+    "diagnosis": "病理性偷窃[偷窃癖]"
+  },
+  {
+    "icd_code": "F63.3",
+    "diagnosis": "拔毛癖"
+  },
+  {
+    "icd_code": "F63.8",
+    "diagnosis": "其他习惯和冲动障碍"
+  },
+  {
+    "icd_code": "F63.9",
+    "diagnosis": "习惯和冲动障碍，未特指"
+  },
+  {
+    "icd_code": "F64.0",
+    "diagnosis": "易性症"
+  },
+  {
+    "icd_code": "F64.1",
+    "diagnosis": "双重角色异装症"
+  },
+  {
+    "icd_code": "F64.2",
+    "diagnosis": "儿童期性身份障碍"
+  },
+  {
+    "icd_code": "F64.8",
+    "diagnosis": "其他性身份障碍"
+  },
+  {
+    "icd_code": "F64.9",
+    "diagnosis": "性身份障碍，未特指"
+  },
+  {
+    "icd_code": "F65.0",
+    "diagnosis": "恋物症"
+  },
+  {
+    "icd_code": "F65.1",
+    "diagnosis": "恋物性异装症"
+  },
+  {
+    "icd_code": "F65.2",
+    "diagnosis": "露阴症"
+  },
+  {
+    "icd_code": "F65.3",
+    "diagnosis": "窥阴症"
+  },
+  {
+    "icd_code": "F65.4",
+    "diagnosis": "恋童症"
+  },
+  {
+    "icd_code": "F65.5",
+    "diagnosis": "施虐受虐症"
+  },
+  {
+    "icd_code": "F65.6",
+    "diagnosis": "多相性性偏好障碍"
+  },
+  {
+    "icd_code": "F65.8",
+    "diagnosis": "其他性偏好障碍"
+  },
+  {
+    "icd_code": "F65.9",
+    "diagnosis": "性偏好障碍，未特指"
+  },
+  {
+    "icd_code": "F66.0",
+    "diagnosis": "性成熟障碍"
+  },
+  {
+    "icd_code": "F66.1",
+    "diagnosis": "自我不和谐性取向"
+  },
+  {
+    "icd_code": "F66.2",
+    "diagnosis": "性关系障碍"
+  },
+  {
+    "icd_code": "F66.8",
+    "diagnosis": "其他性心理发育障碍"
+  },
+  {
+    "icd_code": "F66.9",
+    "diagnosis": "性心理发育障碍，未特指"
+  },
+  {
+    "icd_code": "F68.0",
+    "diagnosis": "为心理学原因而夸大躯体症状"
+  },
+  {
+    "icd_code": "F68.1",
+    "diagnosis": "有意制造或假装症状或残疾，无论是躯体的或心理的[人为障碍]"
+  },
+  {
+    "icd_code": "F68.8",
+    "diagnosis": "其他特指的成人人格和行为障碍"
+  },
+  {
+    "icd_code": "F69",
+    "diagnosis": "未特指的成人人格和行为障碍"
+  },
+  {
+    "icd_code": "F70",
+    "diagnosis": "轻度精神发育迟滞"
+  },
+  {
+    "icd_code": "F71",
+    "diagnosis": "中度精神发育迟滞"
+  },
+  {
+    "icd_code": "F72",
+    "diagnosis": "重度精神发育迟滞"
+  },
+  {
+    "icd_code": "F73",
+    "diagnosis": "极重度精神发育迟滞"
+  },
+  {
+    "icd_code": "F78",
+    "diagnosis": "其他精神发育迟滞"
+  },
+  {
+    "icd_code": "F79",
+    "diagnosis": "未特指的精神发育迟滞"
+  },
+  {
+    "icd_code": "F80.0",
+    "diagnosis": "特定性言语构音障碍"
+  },
+  {
+    "icd_code": "F80.1",
+    "diagnosis": "表达性语言障碍"
+  },
+  {
+    "icd_code": "F80.2",
+    "diagnosis": "感受性语言障碍"
+  },
+  {
+    "icd_code": "F80.3",
+    "diagnosis": "伴发癫痫的获得性失语[Landau-Kleffner综合征]"
+  },
+  {
+    "icd_code": "F80.8",
+    "diagnosis": "其他言语和语言发育障碍"
+  },
+  {
+    "icd_code": "F80.9",
+    "diagnosis": "言语和语言发育障碍，未特指"
+  },
+  {
+    "icd_code": "F81.0",
+    "diagnosis": "特定阅读障碍"
+  },
+  {
+    "icd_code": "F81.1",
+    "diagnosis": "特定拼写障碍"
+  },
+  {
+    "icd_code": "F81.2",
+    "diagnosis": "特定算术技能障碍"
+  },
+  {
+    "icd_code": "F81.3",
+    "diagnosis": "混合性学习技能障碍"
+  },
+  {
+    "icd_code": "F81.8",
+    "diagnosis": "其他学习技能发育障碍"
+  },
+  {
+    "icd_code": "F81.9",
+    "diagnosis": "学习技能发育障碍，未特指"
+  },
+  {
+    "icd_code": "F82",
+    "diagnosis": "特定性运动功能发育障碍"
+  },
+  {
+    "icd_code": "F83",
+    "diagnosis": "混合性特定性发育障碍"
+  },
+  {
+    "icd_code": "F84.0",
+    "diagnosis": "儿童孤独症"
+  },
+  {
+    "icd_code": "F84.1",
+    "diagnosis": "非典型孤独症"
+  },
+  {
+    "icd_code": "F84.2",
+    "diagnosis": "Rett综合征"
+  },
+  {
+    "icd_code": "F84.3",
+    "diagnosis": "其他儿童瓦解性障碍"
+  },
+  {
+    "icd_code": "F84.4",
+    "diagnosis": "伴精神发育迟滞和刻板运动的过度活动障碍"
+  },
+  {
+    "icd_code": "F84.5",
+    "diagnosis": "Asperger综合征"
+  },
+  {
+    "icd_code": "F84.8",
+    "diagnosis": "其他广泛性发育障碍"
+  },
+  {
+    "icd_code": "F84.9",
+    "diagnosis": "广泛性发育障碍，未特指"
+  },
+  {
+    "icd_code": "F88",
+    "diagnosis": "其他心理发育障碍"
+  },
+  {
+    "icd_code": "F89",
+    "diagnosis": "未特指的心理发育障碍"
+  },
+  {
+    "icd_code": "F90.0",
+    "diagnosis": "活动和注意缺陷障碍"
+  },
+  {
+    "icd_code": "F90.1",
+    "diagnosis": "多动性行为障碍"
+  },
+  {
+    "icd_code": "F90.8",
+    "diagnosis": "其他多动症"
+  },
+  {
+    "icd_code": "F90.9",
+    "diagnosis": "多动症，未特指"
+  },
+  {
+    "icd_code": "F91.0",
+    "diagnosis": "局限于家庭环境的品行障碍"
+  },
+  {
+    "icd_code": "F91.1",
+    "diagnosis": "未社会化的品行障碍"
+  },
+  {
+    "icd_code": "F91.2",
+    "diagnosis": "社会化的品行障碍"
+  },
+  {
+    "icd_code": "F91.3",
+    "diagnosis": "对立违抗性障碍"
+  },
+  {
+    "icd_code": "F91.8",
+    "diagnosis": "其他品行障碍"
+  },
+  {
+    "icd_code": "F91.9",
+    "diagnosis": "品行障碍，未特指"
+  },
+  {
+    "icd_code": "F92.0",
+    "diagnosis": "抑郁性品行障碍"
+  },
+  {
+    "icd_code": "F92.8",
+    "diagnosis": "其他混合性品行和情绪障碍"
+  },
+  {
+    "icd_code": "F92.9",
+    "diagnosis": "混合性品行和情绪障碍，未特指"
+  },
+  {
+    "icd_code": "F93.0",
+    "diagnosis": "儿童分离性焦虑障碍"
+  },
+  {
+    "icd_code": "F93.1",
+    "diagnosis": "儿童恐惧性焦虑障碍"
+  },
+  {
+    "icd_code": "F93.2",
+    "diagnosis": "儿童社交焦虑障碍"
+  },
+  {
+    "icd_code": "F93.3",
+    "diagnosis": "同胞竞争障碍"
+  },
+  {
+    "icd_code": "F93.8",
+    "diagnosis": "其他儿童情绪障碍"
+  },
+  {
+    "icd_code": "F93.9",
+    "diagnosis": "儿童情绪障碍，未特指"
+  },
+  {
+    "icd_code": "F94.0",
+    "diagnosis": "选择性缄默症"
+  },
+  {
+    "icd_code": "F94.1",
+    "diagnosis": "儿童反应性依恋障碍"
+  },
+  {
+    "icd_code": "F94.2",
+    "diagnosis": "儿童脱抑制性依恋障碍"
+  },
+  {
+    "icd_code": "F94.8",
+    "diagnosis": "其他儿童社会功能障碍"
+  },
+  {
+    "icd_code": "F94.9",
+    "diagnosis": "儿童社会功能障碍，未特指"
+  },
+  {
+    "icd_code": "F95.0",
+    "diagnosis": "短暂性抽动障碍"
+  },
+  {
+    "icd_code": "F95.1",
+    "diagnosis": "慢性运动或发声抽动障碍"
+  },
+  {
+    "icd_code": "F95.2",
+    "diagnosis": "Tourette综合征"
+  },
+  {
+    "icd_code": "F95.8",
+    "diagnosis": "其他抽动障碍"
+  },
+  {
+    "icd_code": "F95.9",
+    "diagnosis": "抽动障碍，未特指"
+  },
+  {
+    "icd_code": "F98.0",
+    "diagnosis": "非器质性遗尿症"
+  },
+  {
+    "icd_code": "F98.1",
+    "diagnosis": "非器质性遗粪症"
+  },
+  {
+    "icd_code": "F98.2",
+    "diagnosis": "婴幼儿和儿童期喂养障碍"
+  },
+  {
+    "icd_code": "F98.3",
+    "diagnosis": "婴幼儿和儿童期异食癖"
+  },
+  {
+    "icd_code": "F98.4",
+    "diagnosis": "刻板性运动障碍"
+  },
+  {
+    "icd_code": "F98.5",
+    "diagnosis": "口吃[结巴]"
+  },
+  {
+    "icd_code": "F98.6",
+    "diagnosis": "言语急促症"
+  },
+  {
+    "icd_code": "F98.8",
+    "diagnosis": "其他特指的儿童和青少年期行为和情绪障碍"
+  },
+  {
+    "icd_code": "F98.9",
+    "diagnosis": "未特指的儿童和青少年期行为和情绪障碍"
+  },
+  {
+    "icd_code": "F99",
+    "diagnosis": "未特指的精神障碍"
+  }
+]

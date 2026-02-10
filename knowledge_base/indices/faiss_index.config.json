@@ -1,0 +1,5 @@
+{
+  "embedding_model": "Qwen/Qwen3-Embedding-8B",
+  "embedding_dim": 4096,
+  "num_chunks": 492
+}

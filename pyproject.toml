@@ -1,0 +1,104 @@
+[project]
+name = "lingxi-annotation"
+version = "1.0.0"
+description = "精神疾病诊断辅助系统 - 包含Doctor Agent、Patient Agent和静态Benchmark评估"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+dependencies = [
+    # ==================== 核心依赖 ====================
+    "numpy>=1.20.0",
+    "pandas>=1.3.0",
+    # ==================== 机器学习 ====================
+    "scikit-learn>=1.0.0",
+    # ==================== 深度学习框架 ====================
+    "torch>=1.10.0",
+    "transformers>=4.20.0",
+    "sentence-transformers>=2.2.0",
+    # ==================== NLP工具 ====================
+    # 中文分词
+    "jieba>=0.42.0",
+    # 生成任务评估
+    "nltk>=3.6.0",
+    "rouge-score>=0.1.2",
+    "bert-score>=0.3.0",
+    # ==================== RAG向量存储 ====================
+    "faiss-cpu>=1.7.0",
+    "huggingface-hub>=0.14.0",
+    "datasets>=2.14.0",
+    # ==================== HTTP客户端与API ====================
+    "httpx>=0.23.0",
+    "openai>=1.0.0",
+    # ==================== Web框架 ====================
+    # FastAPI (Patient API)
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.20.0",
+    # Flask (Patient Test UI)
+    "flask>=2.0.0",
+    "flask-cors>=3.0.0",
+    # ==================== 数据验证与配置 ====================
+    "pydantic>=2.0.0",
+    "python-dotenv>=0.20.0",
+    # ==================== 文件处理 ====================
+    "openpyxl>=3.0.0",
+    # ==================== 工具库 ====================
+    "tqdm>=4.60.0",
+    "packaging>=20.0",
+    "pip>=21.0.0",
+    "requests>=2.25.0",
+    "pypdf>=6.6.0",
+    "pymupdf>=1.26.7",
+    "numba>=0.63.1",
+]
+
+[project.optional-dependencies]
+# GPU版本的PyTorch (用于GPU加速)
+cuda = [
+    "torch>=1.10.0",
+]
+
+# 开发依赖
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+]
+
+# 完整安装 (包含所有可选依赖)
+all = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.uv.pip]
+# 使用国内镜像加速下载
+index-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.git
+    | \.venv
+    | __pycache__
+    | \.mypy_cache
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+

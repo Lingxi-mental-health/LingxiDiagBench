@@ -1,0 +1,11 @@
+openai
+python-dotenv
+httpx
+packaging
+fastapi
+uvicorn[standard]
+pydantic
+openpyxl
+flask
+flask-cors
+pandas

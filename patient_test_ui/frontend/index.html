@@ -1,0 +1,3037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Agent 测试界面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            width: calc(100vw - 48px);
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 24px 32px 36px;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+        }
+
+        .auth-card {
+            position: relative;
+            background: linear-gradient(180deg, #ffffff 0%, #f6f7ff 100%);
+            border-radius: 18px;
+            padding: 32px 32px 28px;
+            width: 380px;
+            box-shadow: 0 24px 48px rgba(58, 76, 130, 0.18);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border: 1px solid rgba(102, 125, 255, 0.18);
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -60px;
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, rgba(102, 120, 255, 0.2), rgba(102, 120, 255, 0.05));
+            transform: rotate(45deg);
+        }
+
+        .auth-header {
+            position: relative;
+            text-align: left;
+        }
+
+        .auth-title {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            color: #3c4bb8;
+        }
+
+        .auth-subtitle {
+            margin-top: 6px;
+            font-size: 14px;
+            color: #6f7bbd;
+        }
+
+        .auth-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-card h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #4c63d2;
+            text-align: center;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 28px;
+            border-bottom: 1px solid #e4e8ff;
+            padding-bottom: 4px;
+        }
+
+        .auth-tab {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 0 0 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #7d89c6;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .auth-tab::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            height: 3px;
+            background: transparent;
+            border-radius: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .auth-tab.active {
+            color: #4556d3;
+        }
+
+        .auth-tab.active::after {
+            background: linear-gradient(90deg, #6179ff 0%, #75a5ff 100%);
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .auth-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .auth-input-group label {
+            font-size: 13px;
+            color: #6a77b9;
+        }
+
+        .auth-input-group input,
+        .auth-input-group select {
+            padding: 12px 14px;
+            border: 1px solid #d6ddff;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #fff;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .auth-input-group input:focus,
+        .auth-input-group select:focus {
+            outline: none;
+            border-color: #6a82ff;
+            box-shadow: 0 0 0 3px rgba(104, 127, 255, 0.2);
+        }
+
+        .auth-input-group input::placeholder {
+            color: #b4bbe4;
+        }
+
+        .auth-submit {
+            margin-top: 6px;
+            width: 100%;
+        }
+
+        .auth-divider {
+            text-align: center;
+            font-size: 12px;
+            color: #8c96c9;
+            position: relative;
+            margin: 4px 0 8px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #e1e4ff;
+        }
+
+        .auth-divider::before {
+            left: 0;
+        }
+
+        .auth-divider::after {
+            right: 0;
+        }
+
+        .quick-login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quick-login-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid #e4e6f6;
+            font-size: 13px;
+            color: #5260a9;
+            background: #fff;
+            cursor: pointer;
+            transition: border 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .quick-login-button:hover {
+            border-color: #7a8cff;
+            box-shadow: 0 6px 18px rgba(98, 123, 255, 0.16);
+        }
+
+        .quick-login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .auth-message {
+            font-size: 13px;
+            text-align: center;
+            min-height: 18px;
+        }
+
+        .auth-message.error {
+            color: #dc3545;
+        }
+
+        .auth-message.success {
+            color: #28a745;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 18px;
+            padding: 18px 26px;
+            margin-bottom: 20px;
+            box-shadow: 0 14px 32px rgba(58, 76, 130, 0.18);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .brand-mark {
+            width: 160px;
+            height: 46px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #6a7bff, #92b0ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 12px 24px rgba(90, 118, 255, 0.35);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 18px;
+        }
+
+        .header-nav a {
+            font-size: 15px;
+            font-weight: 600;
+            color: #4a57b6;
+            padding: 10px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .header-nav a:hover,
+        .header-nav a.active {
+            background: rgba(108, 132, 240, 0.18);
+            color: #2f3fb2;
+        }
+
+        .user-info {
+            font-size: 14px;
+            color: #4c63d2;
+            font-weight: 600;
+        }
+
+        .settings-button {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, rgba(106, 123, 255, 0.15), rgba(106, 123, 255, 0.08));
+            border: 1px solid rgba(106, 132, 240, 0.3);
+            border-radius: 12px;
+            color: #4c63d2;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .settings-button:hover {
+            background: linear-gradient(135deg, rgba(106, 123, 255, 0.25), rgba(106, 123, 255, 0.15));
+            border-color: rgba(106, 132, 240, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .settings-button svg {
+            animation: none;
+        }
+
+        .settings-button:hover svg {
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .settings-panel {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .settings-content {
+            background-color: white;
+            margin: 8% auto;
+            padding: 30px;
+            border-radius: 18px;
+            width: 90%;
+            max-width: 480px;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.2);
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e0e6ff;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .settings-header h3 {
+            color: #4c63d2;
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .settings-group {
+            margin-bottom: 24px;
+        }
+
+        .settings-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3a4ab5;
+            margin-bottom: 10px;
+        }
+
+        .settings-group .hint {
+            font-size: 12px;
+            color: #7b87c7;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .settings-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e6ff;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .settings-group select:focus {
+            outline: none;
+            border-color: #4c63d2;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .version-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, rgba(106, 123, 255, 0.12), rgba(106, 123, 255, 0.05));
+            border: 1px solid rgba(106, 132, 240, 0.25);
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #4c63d2;
+            margin-left: 8px;
+        }
+
+.main-content {
+            display: flex;
+            gap: 18px;
+            height: calc(100vh - 160px);
+            align-items: stretch;
+        }
+
+        .app-navigation {
+            width: 200px;
+            background: linear-gradient(200deg, rgba(39, 56, 115, 0.96), rgba(23, 30, 68, 0.9));
+            border-radius: 24px;
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 18px 38px rgba(25, 34, 87, 0.4);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 16px 18px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #dfe3ff;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(160deg, #6a7bff 0%, #8aa8ff 100%);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 26px rgba(81, 106, 255, 0.35);
+        }
+
+        .nav-item:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .nav-sub {
+            font-size: 12px;
+            opacity: 0.75;
+        }
+
+        .module-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .module-container .app-module {
+            display: none;
+            flex: 1;
+        }
+
+        .module-container .app-module.active {
+            display: flex;
+        }
+
+        .conversation-shell {
+            flex: 1;
+            display: flex;
+            gap: 18px;
+            height: calc(100vh - 120px);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(245, 247, 254, 0.95));
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(62, 80, 130, 0.12);
+            backdrop-filter: blur(14px);
+        }
+
+        .sidebar {
+            width: 320px;
+            height: 100%;
+            background: rgba(248, 250, 255, 0.9);
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 0 1px rgba(110, 126, 197, 0.12);
+            overflow: hidden;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(110, 126, 197, 0.2);
+            border-radius: 4px;
+        }
+
+        .sidebar h3 {
+            color: #3c4bb8;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(100, 118, 205, 0.2);
+        }
+
+        .patient-search {
+            margin-bottom: 20px;
+        }
+
+        .patient-search input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(120, 138, 220, 0.35);
+            border-radius: 10px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.95);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .patient-search input:focus {
+            outline: none;
+            border-color: #6f84ff;
+            box-shadow: 0 0 0 3px rgba(111, 132, 255, 0.18);
+        }
+
+        .diagnosis-module .sidebar {
+            gap: 18px;
+        }
+
+        .diagnosis-import {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            color: #5160a6;
+            font-size: 13px;
+        }
+
+        .upload-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px dashed rgba(100, 120, 210, 0.45);
+            background: linear-gradient(135deg, rgba(111, 132, 255, 0.16), rgba(111, 132, 255, 0.05));
+            color: #4453b3;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-button:hover {
+            border-color: rgba(111, 132, 255, 0.65);
+            color: #2f3f98;
+            box-shadow: 0 10px 22px rgba(86, 107, 227, 0.18);
+        }
+
+        .upload-button input {
+            display: none;
+        }
+
+        .import-status {
+            font-size: 12px;
+            color: #5a6bc8;
+        }
+
+        .diagnosis-workspace {
+            display: grid;
+            grid-template-columns: minmax(320px, 1.2fr) minmax(320px, 1fr);
+            gap: 20px;
+            height: 100%;
+        }
+
+        /* 增强版诊断工作区 */
+        .diagnosis-workspace-enhanced {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        /* 新的两栏式布局 */
+        .diagnosis-workspace-new {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 右侧面板容器 */
+        .diagnosis-right-panel {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 右侧诊断详情容器 - 可滚动 */
+        .diagnosis-details-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+            min-height: 0;
+        }
+
+        /* 固定按钮区域 */
+        .diagnosis-actions-fixed {
+            flex-shrink: 0;
+            background: rgba(248, 250, 255, 0.98);
+            padding: 15px 20px;
+            border-top: 2px solid rgba(120, 138, 220, 0.2);
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 -4px 12px rgba(72, 93, 190, 0.08);
+        }
+
+        /* 滚动条样式 */
+        .diagnosis-details-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .diagnosis-details-container::-webkit-scrollbar-track {
+            background: rgba(223, 230, 255, 0.6);
+            border-radius: 10px;
+        }
+
+        .diagnosis-details-container::-webkit-scrollbar-thumb {
+            background: rgba(100, 122, 220, 0.7);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .diagnosis-details-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(84, 104, 211, 0.85);
+        }
+
+        /* 统一诊断编辑器样式 */
+        .diagnosis-editor-unified {
+            background: rgba(248, 250, 255, 0.94);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(120, 138, 220, 0.18);
+            box-shadow: 0 14px 30px rgba(72, 93, 190, 0.12);
+        }
+
+        .diagnosis-editor-unified .form-group {
+            margin-bottom: 18px;
+        }
+
+        .diagnosis-editor-unified .form-group:last-of-type {
+            margin-bottom: 20px;
+        }
+
+        .diagnosis-editor-unified label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3a4ab5;
+            margin-bottom: 8px;
+        }
+
+        .diagnosis-editor-unified textarea {
+            width: 100%;
+            min-height: 80px;
+            border-radius: 10px;
+            border: 1px solid rgba(120, 138, 220, 0.35);
+            padding: 12px;
+            resize: vertical;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #465097;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .diagnosis-editor-unified textarea:focus {
+            outline: none;
+            border-color: #657bff;
+            box-shadow: 0 0 0 3px rgba(101, 123, 255, 0.18);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .diagnosis-editor-unified textarea::placeholder {
+            color: #9ca5c7;
+            font-style: italic;
+        }
+
+        /* 字段状态标签 */
+        .field-status {
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(100, 120, 210, 0.12);
+            color: #5160a6;
+            margin-left: 10px;
+        }
+
+        .field-status.generated {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+        }
+
+        .field-status.edited {
+            background: rgba(255, 193, 7, 0.15);
+            color: #856404;
+        }
+
+        /* 诊断修正区域样式 */
+        .diagnosis-correction-section {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 2px dashed rgba(120, 138, 220, 0.25);
+        }
+
+        .correction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .correction-header label {
+            margin: 0;
+        }
+
+        #correctionSelectors {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(120, 138, 220, 0.2);
+        }
+
+        #correctionSelectors .form-group {
+            margin-bottom: 14px;
+        }
+
+        #correctionSelectors label {
+            font-size: 13px;
+            color: #4a57b6;
+            font-weight: 600;
+        }
+
+        #correctionSelectors select,
+        #correctionSelectors input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(120, 138, 220, 0.35);
+            font-size: 13px;
+            color: #465097;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        #correctionSelectors select:focus,
+        #correctionSelectors input:focus {
+            outline: none;
+            border-color: #657bff;
+            box-shadow: 0 0 0 3px rgba(101, 123, 255, 0.18);
+        }
+
+        #correctionSelectors select:disabled {
+            background: rgba(240, 243, 255, 0.6);
+            color: #9ca5c7;
+            cursor: not-allowed;
+        }
+
+        #correctionIcdCode {
+            font-weight: 600;
+            color: #3a4ab5;
+        }
+
+        .diagnosis-row-top {
+            display: grid;
+            grid-template-columns: minmax(320px, 1.2fr) minmax(320px, 1fr);
+            gap: 20px;
+            min-height: 400px;
+        }
+
+        .diagnosis-row-middle {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            min-height: 250px;
+        }
+
+        .diagnosis-row-bottom {
+            display: block;
+            min-height: 150px;
+        }
+
+        .diagnosis-detail-box {
+            background: rgba(248, 250, 255, 0.94);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(120, 138, 220, 0.18);
+            box-shadow: 0 12px 28px rgba(72, 93, 190, 0.10);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .detail-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(120, 138, 220, 0.2);
+        }
+
+        .detail-box-header h4 {
+            margin: 0;
+            color: #3a4ab5;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .detail-box-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(100, 120, 210, 0.12);
+            color: #5160a6;
+        }
+
+        .detail-box-badge.generated {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+        }
+
+        .detail-box-content {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            color: #465097;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .detail-placeholder {
+            color: #7b87c7;
+            font-style: italic;
+            margin: 0;
+        }
+
+        .detail-box-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .detail-box-content::-webkit-scrollbar-thumb {
+            background: rgba(110, 126, 197, 0.3);
+            border-radius: 4px;
+        }
+
+        .detail-box-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .detail-box-content li {
+            margin: 4px 0;
+        }
+
+        .detail-section {
+            margin-bottom: 12px;
+        }
+
+        .detail-section-title {
+            font-weight: 600;
+            color: #3a4ab5;
+            margin-bottom: 6px;
+        }
+
+        .doctor-notes-box {
+            background: rgba(252, 253, 255, 0.95);
+            border-radius: 16px;
+            padding: 16px;
+            border: 1px solid rgba(133, 151, 227, 0.25);
+            box-shadow: 0 8px 20px rgba(72, 93, 190, 0.08);
+        }
+
+        .autosave-indicator {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            background: rgba(255, 193, 7, 0.15);
+            color: #856404;
+        }
+
+        .autosave-indicator.saved {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+        }
+
+        .autosave-indicator.saving {
+            background: rgba(0, 123, 255, 0.15);
+            color: #007bff;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1400px) {
+            .diagnosis-row-middle {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            /* 优化两栏布局在中等屏幕上的显示 */
+            .diagnosis-workspace-new {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .diagnosis-row-top {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            /* 小屏幕改为单栏布局 */
+            .diagnosis-workspace-new {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .conversation-log {
+                max-height: 400px;
+            }
+            
+            /* 减小编辑器内边距 */
+            .diagnosis-editor-unified {
+                padding: 15px;
+            }
+            
+            /* 调整文本框行数 */
+            .diagnosis-editor-unified textarea {
+                min-height: 60px;
+            }
+            
+            .diagnosis-editor-unified .form-group {
+                margin-bottom: 15px;
+            }
+            
+            /* 固定按钮区域优化 */
+            .diagnosis-actions-fixed {
+                padding: 12px 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 移动端优化 */
+            .diagnosis-workspace-new {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .conversation-log {
+                max-height: 300px;
+            }
+            
+            .diagnosis-editor-unified {
+                padding: 12px;
+                border-radius: 12px;
+            }
+            
+            .diagnosis-editor-unified label {
+                font-size: 13px;
+            }
+            
+            .diagnosis-editor-unified textarea {
+                font-size: 12px;
+                padding: 10px;
+                min-height: 50px;
+            }
+            
+            .diagnosis-editor-unified .form-group {
+                margin-bottom: 12px;
+            }
+            
+            /* 固定按钮区域移动端优化 */
+            .diagnosis-actions-fixed {
+                padding: 10px 12px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+            }
+            
+            .field-status {
+                font-size: 10px;
+                padding: 3px 8px;
+            }
+            
+            .auto-result-hint {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+        }
+
+        .conversation-log,
+        .diagnosis-editor {
+            background: rgba(248, 250, 255, 0.94);
+            border-radius: 18px;
+            padding: 18px;
+            border: 1px solid rgba(120, 138, 220, 0.18);
+            box-shadow: 0 14px 30px rgba(72, 93, 190, 0.12);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .conversation-log-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #3a4ab5;
+            font-weight: 600;
+        }
+
+        .conversation-log-body {
+            margin-top: 16px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            max-height: calc(100vh - 280px);
+        }
+
+        .conversation-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            color: #465097;
+        }
+
+        .conversation-table th,
+        .conversation-table td {
+            border-bottom: 1px solid rgba(118, 134, 210, 0.18);
+            padding: 10px 8px;
+            text-align: left;
+        }
+
+        .conversation-table th:first-child,
+        .conversation-table td:first-child {
+            padding-right: 6px;
+            text-align: center;
+        }
+
+        .conversation-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .conversation-table tbody tr.empty td {
+            text-align: center;
+            color: #7b87c7;
+            font-style: italic;
+        }
+
+        .diagnosis-editor .form-group {
+            margin-bottom: 16px;
+        }
+
+        .diagnosis-editor .form-group:first-child {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .diagnosis-editor .form-group:first-child textarea {
+            flex: 1;
+            min-height: 400px;
+        }
+
+        .diagnosis-editor textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 10px;
+            border: 1px solid rgba(120, 138, 220, 0.35);
+            padding: 12px;
+            resize: vertical;
+            font-size: 13px;
+        }
+
+        .diagnosis-editor textarea:focus {
+            outline: none;
+            border-color: #657bff;
+            box-shadow: 0 0 0 3px rgba(101, 123, 255, 0.18);
+        }
+
+        .auto-result-hint {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #4b5ac5;
+            min-height: 18px;
+        }
+
+        .patient-list {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 4px;
+            position: relative;
+        }
+
+        .patient-list::before {
+            content: '';
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(to bottom, rgba(248, 250, 255, 0.9), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .patient-list::after {
+            content: '';
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(to top, rgba(248, 250, 255, 0.9), transparent);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .patient-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .patient-list::-webkit-scrollbar-track {
+            background: rgba(111, 132, 255, 0.08);
+            border-radius: 4px;
+        }
+
+        .patient-list::-webkit-scrollbar-thumb {
+            background: rgba(111, 132, 255, 0.25);
+            border-radius: 4px;
+        }
+
+        .patient-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(111, 132, 255, 0.4);
+        }
+
+        /* 对话预览表格滚动条样式 */
+        .conversation-log-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .conversation-log-body::-webkit-scrollbar-track {
+            background: rgba(223, 230, 255, 0.6);
+            border-radius: 10px;
+        }
+
+        .conversation-log-body::-webkit-scrollbar-thumb {
+            background: rgba(100, 122, 220, 0.7);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .conversation-log-body::-webkit-scrollbar-thumb:hover {
+            background: rgba(84, 104, 211, 0.85);
+        }
+
+        .patient-item {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid transparent;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 16px rgba(80, 106, 227, 0.08);
+        }
+
+        .patient-item:hover {
+            border-color: rgba(80, 106, 227, 0.35);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px rgba(80, 106, 227, 0.15);
+        }
+
+        .patient-item.selected {
+            background: linear-gradient(180deg, rgba(96, 124, 255, 0.15), rgba(96, 124, 255, 0.05));
+            border-color: rgba(80, 106, 227, 0.55);
+            box-shadow: 0 12px 28px rgba(80, 106, 227, 0.25);
+        }
+
+        .patient-item.completed {
+            background: linear-gradient(180deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.03));
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .patient-item.completed:hover {
+            border-color: rgba(76, 175, 80, 0.5);
+            box-shadow: 0 12px 24px rgba(76, 175, 80, 0.15);
+        }
+
+        .patient-item.completed.selected {
+            background: linear-gradient(180deg, rgba(76, 175, 80, 0.18), rgba(76, 175, 80, 0.08));
+            border-color: rgba(76, 175, 80, 0.6);
+            box-shadow: 0 12px 28px rgba(76, 175, 80, 0.25);
+        }
+
+        .patient-item .patient-id {
+            font-weight: bold;
+            color: #3c4bb8;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .patient-item.completed .patient-id {
+            color: #4caf50;
+        }
+
+        .patient-item .patient-info {
+            font-size: 13px;
+            color: #6b77ad;
+            margin-bottom: 3px;
+        }
+
+        .patient-item .patient-complaint {
+            font-size: 12px;
+            color: #8c97c2;
+        }
+
+        .main-area {
+            flex: 1;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 20px;
+            padding: 16px 20px;
+            box-shadow: inset 0 0 0 1px rgba(112, 132, 215, 0.12);
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        .chat-diagnosis-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            height: 100%;
+            transition: grid-template-columns 0.3s ease;
+        }
+
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 160px); /* 固定高度，不随分辨率变化 */
+            min-height: calc(100vh - 160px);
+            max-height: calc(100vh - 160px);
+            border-radius: 18px;
+            background: linear-gradient(180deg, rgba(246, 248, 255, 0.95), rgba(255, 255, 255, 0.98));
+            box-shadow: 0 16px 30px rgba(90, 108, 201, 0.12);
+            border: 1px solid rgba(123, 142, 220, 0.14);
+        }
+
+        .diagnosis-panel {
+            background: rgba(252, 253, 255, 0.95);
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid rgba(133, 151, 227, 0.25);
+            overflow-y: auto;
+            max-height: calc(100vh - 260px);
+            position: relative;
+        }
+
+        .diagnosis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e6ff;
+            margin-bottom: 20px;
+        }
+
+        .diagnosis-header h3 {
+            color: #4c63d2;
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .close-panel {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #aaa;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-panel:hover {
+            background: #e0e6ff;
+            color: #4c63d2;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .diagnosis-result {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #e0e6ff;
+        }
+
+        .diagnosis-result h4 {
+            color: #4c63d2;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        /* 评测面板样式 - 改为模态框 */
+        .evaluation-panel {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .evaluation-modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 0;
+            border-radius: 16px;
+            width: 85%;
+            max-width: 800px;
+            max-height: 85vh;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .evaluation-modal-body {
+            padding: 15px 25px 20px;
+            overflow-y: auto;
+            max-height: calc(85vh - 100px);
+        }
+
+        .evaluation-dimensions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .evaluation-dimension {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e6ff;
+            box-shadow: 0 2px 8px rgba(76, 99, 210, 0.08);
+        }
+
+        .dimension-title {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+            color: #4c63d2;
+            margin-bottom: 12px;
+        }
+
+        .rating-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rating-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rating-option {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+
+        .rating-option span {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #f0f4ff;
+            border: 2px solid #d0d9ff;
+            border-radius: 8px;
+            color: #6977b8;
+            font-weight: 500;
+            transition: all 0.3s;
+            min-width: 55px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .rating-option input[type="radio"]:checked + span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .rating-option:hover span {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .score-description {
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: #f8f9ff;
+            border-left: 3px solid #667eea;
+            border-radius: 6px;
+            color: #4c63d2;
+            font-size: 13px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .score-description.active {
+            display: block;
+            animation: fadeInUp 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .evaluation-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0f8f5;
+            border-radius: 10px;
+            border: 2px solid #28a745;
+        }
+
+        .evaluation-result h4 {
+            color: #28a745;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .chat-header {
+            padding: 20px 24px 12px;
+            border-bottom: 1px solid rgba(120, 138, 220, 0.25);
+            margin-bottom: 12px;
+        }
+
+        .patient-detail {
+            background: linear-gradient(135deg, rgba(110, 130, 240, 0.12), rgba(255, 255, 255, 0.9));
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(118, 138, 220, 0.25);
+            box-shadow: 0 12px 24px rgba(104, 122, 220, 0.12);
+        }
+
+        .patient-detail h4 {
+            color: #3c4bb8;
+            margin-bottom: 10px;
+        }
+
+        .patient-detail .detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .patient-detail .detail-item {
+            font-size: 14px;
+            color: #6977b8;
+        }
+
+        .patient-detail .detail-label {
+            font-weight: bold;
+            color: #3c4bb8;
+        }
+
+        .conversation-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 22px 26px;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 18px 18px 0 0;
+            margin: 0 24px;
+            margin-bottom: 0;
+            position: relative;
+            scroll-behavior: smooth;
+            box-shadow: inset 0 -1px 0 rgba(132, 148, 220, 0.12);
+        }
+
+        /* 自定义滚动条样式 */
+        .messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: rgba(223, 230, 255, 0.6);
+            border-radius: 10px;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: rgba(100, 122, 220, 0.7);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: rgba(84, 104, 211, 0.85);
+        }
+
+        /* 为Firefox提供滚动条样式 */
+        .messages {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(100, 122, 220, 0.7) rgba(223, 230, 255, 0.6);
+            /* 移动设备优化 */
+            -webkit-overflow-scrolling: touch;
+            /* 防止iOS上的弹性滚动 */
+            overscroll-behavior: contain;
+        }
+
+        /* 滚动控制按钮 */
+        .scroll-controls {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .messages:hover .scroll-controls {
+            opacity: 1;
+        }
+
+        .scroll-btn {
+            width: 32px;
+            height: 32px;
+            background: rgba(76, 99, 210, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .scroll-btn:hover {
+            background: rgba(59, 82, 196, 0.95);
+            transform: scale(1.1);
+        }
+
+        .scroll-btn:disabled {
+            background: rgba(204, 204, 204, 0.7);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 滚动到底部按钮 - 位于底部右侧 */
+        .scroll-to-bottom {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(76, 99, 210, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .scroll-to-bottom.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-to-bottom:hover {
+            background: rgba(59, 82, 196, 0.95);
+            transform: scale(1.1);
+        }
+
+        .message {
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.doctor {
+            text-align: right;
+        }
+
+        .message.patient {
+            text-align: left;
+        }
+
+        .message.system {
+            text-align: center;
+        }
+
+        .message-label {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 3px;
+            opacity: 0.8;
+        }
+
+        .message.doctor .message-label {
+            text-align: right;
+            color: #4c63d2;
+        }
+
+        .message.patient .message-label {
+            text-align: left;
+            color: #666;
+        }
+
+        .message-content {
+            display: inline-block;
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            writing-mode: horizontal-tb;
+            direction: ltr;
+            margin-top: 2px;
+        }
+
+        .message.doctor .message-content {
+            background: #4c63d2;
+            color: white;
+        }
+
+        .message.patient .message-content {
+            background: #e0e6ff;
+            color: #333;
+        }
+
+        .message.loading .message-content {
+            background: #f0f0f0;
+            color: #666;
+            display: flex !important;
+            align-items: center;
+            flex-direction: row !important;
+            min-height: 24px;
+            white-space: nowrap !important;
+            writing-mode: horizontal-tb !important;
+            text-orientation: mixed !important;
+            direction: ltr !important;
+        }
+
+        .message.system .message-content {
+            background: #f0f0f0;
+            color: #666;
+            font-style: italic;
+            max-width: 80%;
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .suggested-questions {
+            display: none !important; /* 完全隐藏推荐问题区域 */
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(76, 99, 210, 0.35);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(76, 99, 210, 0.2);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 响应式设计：在小屏幕上调整推荐问题区域 */
+        @media (max-height: 600px) {
+            .suggested-questions {
+                max-height: 150px;
+            }
+        }
+        
+        @media (max-height: 500px) {
+            .suggested-questions {
+                max-height: 120px;
+            }
+        }
+
+        .suggested-questions.active {
+            display: block;
+        }
+
+        .suggested-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #4c63d2;
+            margin-bottom: 6px;
+        }
+
+        .suggested-hint {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .suggested-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggested-question {
+            border: none;
+            background: rgba(76, 99, 210, 0.18);
+            color: #4c63d2;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .suggested-question:hover {
+            background: rgba(76, 99, 210, 0.26);
+            transform: translateY(-1px);
+        }
+
+        .suggested-clear {
+            border: none;
+            background: none;
+            color: #888;
+            font-size: 12px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: color 0.2s;
+        }
+
+        .suggested-clear:hover {
+            color: #4c63d2;
+        }
+
+        .auto-diagnosis-block {
+            background: rgba(76, 99, 210, 0.1);
+            border-left: 4px solid #4c63d2;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        .auto-diagnosis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #4c63d2;
+            margin-bottom: 8px;
+        }
+
+        .auto-diagnosis-meta {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .auto-diagnosis-think,
+        .auto-diagnosis-codes {
+            margin-top: 10px;
+        }
+
+        .auto-diagnosis-think p,
+        .auto-diagnosis-codes p {
+            margin-top: 6px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .input-area {
+            position: relative;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 1px solid rgba(118, 138, 220, 0.2);
+            padding: 18px 24px;
+            flex-shrink: 0;
+        }
+
+        .input-area textarea {
+            flex: 1;
+            padding: 14px 16px;
+            border: 1px solid rgba(120, 138, 220, 0.35);
+            border-radius: 14px;
+            resize: vertical;
+            min-height: 50px;
+            max-height: 150px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .input-area textarea:focus {
+            outline: none;
+            border-color: #6f84ff;
+            box-shadow: 0 0 0 3px rgba(111, 132, 255, 0.16);
+        }
+
+        .input-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-actions .btn {
+            padding: 10px 18px;
+            min-width: 110px;
+        }
+
+        .input-actions .btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding: 16px 24px 20px;
+            border-top: 1px solid rgba(118, 134, 214, 0.2);
+            flex-wrap: wrap;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 248, 255, 0.95));
+            border-radius: 0 0 18px 18px;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .action-buttons .btn {
+            background: linear-gradient(135deg, #3345cc 0%, #1b2ba0 100%);
+            color: #ffffff;
+            box-shadow: 0 12px 30px rgba(41, 62, 204, 0.3);
+            border: none;
+        }
+
+        .action-buttons .btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #2c3dc2 0%, #14218f 100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(120deg, #6a7bff 0%, #8aa8ff 100%);
+            color: white;
+            box-shadow: 0 10px 20px rgba(90, 114, 255, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(120deg, #5b6cf0 0%, #7a98f4 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-info {
+            background: linear-gradient(120deg, #5c6fe0 0%, #768fff 100%);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(90, 114, 255, 0.25);
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(120deg, #4f62d2 0%, #6a82f0 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-success,
+        .btn-warning,
+        .btn-danger {
+            background: linear-gradient(135deg, #3345cc 0%, #1b2ba0 100%);
+            color: #ffffff;
+        }
+
+        .btn-success:hover,
+        .btn-warning:hover,
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #2c3dc2 0%, #14218f 100%);
+            transform: translateY(-2px);
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px 0;
+            font-size: 12px;
+            color: #7e8ac5;
+        }
+
+        .loading-icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: #4c63d2;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+            flex-shrink: 0;
+            /* 使用脉动效果替代旋转 */
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-text {
+            display: inline-block;
+            white-space: nowrap !important;
+            writing-mode: horizontal-tb !important;
+            text-orientation: mixed !important;
+            direction: ltr !important;
+            vertical-align: middle;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        /* 移除旧的旋转动画 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 16px 64px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            border-bottom: 2px solid #e0e6ff;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #4c63d2;
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e6ff;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            background-color: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4c63d2;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group input[readonly] {
+            background-color: #f8f9fa;
+            cursor: default;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 4px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1400px) {
+            .chat-diagnosis-container.with-diagnosis {
+                grid-template-columns: 1fr 350px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .app-navigation {
+                flex-direction: row;
+                width: 100%;
+                padding: 16px;
+                border-radius: 18px;
+                justify-content: center;
+                gap: 18px;
+            }
+
+            .nav-item {
+                flex: 1;
+            }
+
+            .conversation-shell {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: 320px;
+                overflow-y: auto;
+            }
+
+            .chat-diagnosis-container.with-diagnosis {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .conversation-shell {
+                padding: 16px;
+            }
+
+            .sidebar-top span {
+                display: none;
+            }
+
+            .chat-diagnosis-container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .diagnosis-panel {
+                order: 2;
+                max-height: 300px;
+            }
+
+            .chat-area {
+                order: 1;
+            }
+
+            .patient-detail .detail-row {
+                grid-template-columns: 1fr;
+            }
+
+            .scroll-controls {
+                display: none;
+            }
+
+            .scroll-to-bottom {
+                width: 48px;
+                height: 48px;
+                right: 10px;
+                bottom: 10px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-title">欢迎使用 灵溪智慧平台</div>
+                <div class="auth-subtitle">登录后即可与体验虚拟医生和患者开启问诊之旅</div>
+            </div>
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" data-mode="login">账号登录</button>
+                <button type="button" class="auth-tab" data-mode="register">注册新用户</button>
+            </div>
+            <div class="auth-content">
+                <form id="loginForm" class="auth-form">
+                    <div class="auth-input-group">
+                        <label for="loginUserSelect">选择已有账号</label>
+                        <select id="loginUserSelect">
+                            <option value="">选择已有用户...</option>
+                        </select>
+                    </div>
+                    <div class="auth-input-group">
+                        <label for="loginUsername">或输入用户名</label>
+                        <input type="text" id="loginUsername" placeholder="请输入用户名">
+                    </div>
+                    <div class="auth-input-group">
+                        <label for="loginPassword">密码</label>
+                        <input type="password" id="loginPassword" placeholder="请输入密码">
+                    </div>
+                    <button type="submit" class="btn btn-primary auth-submit">登录</button>
+                </form>
+                <form id="registerForm" class="auth-form" style="display: none;">
+                    <div class="auth-input-group">
+                        <label for="registerUsername">用户名</label>
+                        <input type="text" id="registerUsername" placeholder="设置登录用户名">
+                    </div>
+                    <div class="auth-input-group">
+                        <label for="registerPassword">密码</label>
+                        <input type="password" id="registerPassword" placeholder="设置登录密码">
+                    </div>
+                    <div class="auth-input-group">
+                        <label for="registerPasswordConfirm">确认密码</label>
+                        <input type="password" id="registerPasswordConfirm" placeholder="再次输入密码以确认">
+                    </div>
+                    <button type="submit" class="btn btn-primary auth-submit">注册并登录</button>
+                </form>
+                <div class="auth-divider">更多登录方式（敬请期待）</div>
+                <div class="quick-login-buttons">
+                    <button type="button" class="quick-login-button" disabled>
+                        <span>使用企业账号登录</span>
+                    </button>
+                    <button type="button" class="quick-login-button" disabled>
+                        <span>使用第三方账号登录</span>
+                    </button>
+                </div>
+                <div class="auth-message" id="authMessage"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <div class="brand-mark">灵溪智慧平台</div>
+                <nav class="header-nav">
+                    <a href="#" class="active">主页</a>
+                     <a href="#EverPsychiatrist-info" onclick="showInstructionOverlay(event)">说明</a>
+                </nav>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <button class="settings-button" onclick="showSettingsPanel()" title="Agent版本设置">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m8.66-15.66l-4.24 4.24m-4.24 4.24l-4.24 4.24m18.48 0l-4.24-4.24m-4.24-4.24l-4.24-4.24"></path>
+                    </svg>
+                    <span style="margin-left: 6px;">设置</span>
+                </button>
+                <div class="user-info">当前用户：<span id="currentUserDisplay">未登录</span></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <aside class="app-navigation">
+                <div class="nav-item active" data-module="psychiatrist">
+                    <span class="nav-label">EverPsychiatrist</span>
+                    <span class="nav-sub">模拟医生问诊</span>
+                </div>
+                <div class="nav-item" data-module="psychosis">
+                    <span class="nav-label">EverPsychosis</span>
+                    <span class="nav-sub">模拟病人回答医生问题</span>
+                </div>
+                <div class="nav-item" data-module="diagnosis">
+                    <span class="nav-label">EverDiagnosis</span>
+                    <span class="nav-sub">诊断过程与结论生成</span>
+                </div>
+            </aside>
+
+            <div class="module-container">
+                <div class="conversation-shell app-module active" id="module-psychiatrist" data-module="psychiatrist">
+                    <div class="sidebar">
+                        <div class="sidebar-top">
+                            <h3>患者列表</h3>
+                            <span style="font-size:12px;color:#7a86c6;">共 <span id="patientCountDisplay">--</span> 位</span>
+                        </div>
+
+                        <div class="patient-search">
+                            <input type="text" id="searchInput" placeholder="搜索患者 (ID、性别...)" data-module="psychiatrist">
+                        </div>
+
+                        <div class="patient-list" id="patientList">
+                            <div class="alert alert-info">
+                                正在加载患者数据...
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-area">
+                        <div id="welcomeScreen">
+                            <div class="alert alert-info">
+                                <h4>欢迎使用 Patient Agent 测试界面</h4>
+                                <p>请从左侧选择一位患者开始对话。系统将加载患者的背景信息，您可以与虚拟患者进行多轮问诊对话。</p>
+                                <br>
+                                <p><strong>使用指南：</strong></p>
+                                <ul style="margin-left: 20px; margin-top: 10px;">
+                                    <li>选择患者后，请您主动开始问诊</li>
+                                    <li>您可以像真实问诊一样提问</li>
+                                    <li>患者会根据病历信息真实回复</li>
+                                    <li>当您认为可以下诊断时，点击"生成诊断"按钮</li>
+                                    <li>系统会保存完整的对话记录和诊断结果</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div id="chatInterface" style="display: none;">
+                            <div class="chat-diagnosis-container">
+                                <div class="chat-area">
+                                    <div class="chat-header">
+                                        <div class="patient-detail" id="patientDetail"></div>
+                                        <div class="status-bar">
+                                            <span id="sessionStatus">会话状态: 等待中</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="conversation-area">
+                                        <div class="messages" id="messages">
+                                            <div class="scroll-controls">
+                                                <button class="scroll-btn" id="scrollToTop" onclick="scrollToTop()" title="回到顶部">
+                                                    ↑
+                                                </button>
+                                                <button class="scroll-btn" id="scrollToBottom" onclick="scrollToBottom()" title="回到底部">
+                                                    ↓
+                                                </button>
+                                            </div>
+                                            <button class="scroll-to-bottom" id="quickScrollToBottom" onclick="scrollToBottom()" title="回到底部">
+                                                ↓
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-area">
+                                        <div class="suggested-questions" id="suggestedQuestions" aria-hidden="true">
+                                            <div class="suggested-header">
+                                                <span>推荐提问</span>
+                                                <button type="button" class="suggested-clear" onclick="clearSuggestedQuestions()">清空</button>
+                                            </div>
+                                            <div class="suggested-hint">根据患者的最新回答生成的候选提问，点击可快速填入输入框。</div>
+                                            <div class="suggested-list" id="suggestedQuestionsList"></div>
+                                        </div>
+                                        <textarea
+                                            id="messageInput"
+                                            placeholder="输入您的问题..."
+                                            disabled
+                                        ></textarea>
+                                        <div class="input-actions">
+                                            <button class="btn btn-info" id="recommendButton" disabled style="display: none;">推荐问题</button>
+                                            <button class="btn btn-primary" id="sendButton" onclick="sendMessage()" disabled>发送</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary" onclick="showEvaluationPanel()">
+                                            患者评测
+                                        </button>
+                                        <button class="btn btn-success" onclick="showDiagnosisPanel()">
+                                            生成诊断
+                                        </button>
+                                        <button class="btn btn-info" id="autoDiagnosisButton" onclick="autoDiagnose()" disabled>
+                                            自动诊断
+                                        </button>
+                                        <button class="btn btn-warning" onclick="exportConversation()">
+                                            导出对话
+                                        </button>
+                                        <button class="btn btn-danger" onclick="endSession()">
+                                            结束会话
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="diagnosis-panel" id="diagnosisPanel" style="display: none;">
+                                    <div class="diagnosis-header">
+                                        <h3>诊断结果</h3>
+                                        <button class="close-panel" onclick="closeDiagnosisPanel()">&times;</button>
+                                    </div>
+
+                                    <form id="diagnosisForm">
+                                        <div class="form-group">
+                                            <label for="diagnosisCategorySelect">第一步：选择诊断大类:</label>
+                                            <select id="diagnosisCategorySelect" onchange="updateSubcategorySelect()" required>
+                                                <option value="">请选择诊断大类...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="diagnosisSubcategorySelect">第二步：选择具体子类:</label>
+                                            <select id="diagnosisSubcategorySelect" onchange="updateDiagnosisItems()" required disabled>
+                                                <option value="">请先选择诊断大类...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="diagnosisSelect">第三步：选择具体诊断:</label>
+                                            <select id="diagnosisSelect" onchange="updateIcdCode()" required disabled>
+                                                <option value="">请先选择子类...</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="diagnosisText">或手动输入诊断:</label>
+                                            <input type="text" id="diagnosisText" placeholder="自定义诊断..." oninput="clearDiagnosisSelect()">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="icdCode">ICD-10 代码:</label>
+                                            <input type="text" id="icdCode" placeholder="如: F20.0" required readonly>
+                                            <small style="color: #666; font-size: 12px;">选择诊断后将自动填充，也可手动修改</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="reasoning">诊断依据:</label>
+                                            <textarea id="reasoning" placeholder="请描述您的诊断理由和依据..." required></textarea>
+                                        </div>
+
+                                        <div class="form-actions">
+                                            <button type="button" class="btn btn-warning" onclick="closeDiagnosisPanel()">取消</button>
+                                            <button type="submit" class="btn btn-success">保存诊断</button>
+                                        </div>
+                                    </form>
+
+                                    <div class="diagnosis-result" id="diagnosisResult" style="display: none;">
+                                        <h4>诊断对比结果</h4>
+                                        <div id="diagnosisComparison"></div>
+                                    </div>
+                                </div>
+
+                                <!-- 患者评测面板 - 模态框 -->
+                                <div class="evaluation-panel" id="evaluationPanel" style="display: none;" onclick="handleModalClick(event)">
+                                    <div class="evaluation-modal-content" onclick="event.stopPropagation()">
+                                        <div class="diagnosis-header" style="padding: 15px 25px;">
+                                            <h3 style="font-size: 18px;">患者评测</h3>
+                                            <button class="close-panel" onclick="closeEvaluationPanel()">&times;</button>
+                                        </div>
+
+                                        <div class="evaluation-modal-body">
+                                            <form id="evaluationForm" onsubmit="handleEvaluationSubmit(event)">
+                                                <div class="evaluation-dimensions">
+                                            <!-- 临床逼真度 -->
+                                            <div class="evaluation-dimension">
+                                                <label class="dimension-title">临床逼真度 (1-5分):</label>
+                                                <div class="rating-group">
+                                                    <div class="rating-buttons">
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="clinical_realism" value="1" onchange="updateScoreDescription('clinical_realism', 1)" required>
+                                                            <span>1分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="clinical_realism" value="2" onchange="updateScoreDescription('clinical_realism', 2)">
+                                                            <span>2分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="clinical_realism" value="3" onchange="updateScoreDescription('clinical_realism', 3)">
+                                                            <span>3分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="clinical_realism" value="4" onchange="updateScoreDescription('clinical_realism', 4)">
+                                                            <span>4分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="clinical_realism" value="5" onchange="updateScoreDescription('clinical_realism', 5)">
+                                                            <span>5分</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="score-description" id="desc-clinical_realism"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 互动与沟通 -->
+                                            <div class="evaluation-dimension">
+                                                <label class="dimension-title">互动与沟通 (1-5分):</label>
+                                                <div class="rating-group">
+                                                    <div class="rating-buttons">
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="interaction" value="1" onchange="updateScoreDescription('interaction', 1)" required>
+                                                            <span>1分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="interaction" value="2" onchange="updateScoreDescription('interaction', 2)">
+                                                            <span>2分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="interaction" value="3" onchange="updateScoreDescription('interaction', 3)">
+                                                            <span>3分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="interaction" value="4" onchange="updateScoreDescription('interaction', 4)">
+                                                            <span>4分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="interaction" value="5" onchange="updateScoreDescription('interaction', 5)">
+                                                            <span>5分</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="score-description" id="desc-interaction"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 一致性与可控性 -->
+                                            <div class="evaluation-dimension">
+                                                <label class="dimension-title">一致性与可控性 (1-5分):</label>
+                                                <div class="rating-group">
+                                                    <div class="rating-buttons">
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="consistency" value="1" onchange="updateScoreDescription('consistency', 1)" required>
+                                                            <span>1分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="consistency" value="2" onchange="updateScoreDescription('consistency', 2)">
+                                                            <span>2分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="consistency" value="3" onchange="updateScoreDescription('consistency', 3)">
+                                                            <span>3分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="consistency" value="4" onchange="updateScoreDescription('consistency', 4)">
+                                                            <span>4分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="consistency" value="5" onchange="updateScoreDescription('consistency', 5)">
+                                                            <span>5分</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="score-description" id="desc-consistency"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 安全与伦理 -->
+                                            <div class="evaluation-dimension">
+                                                <label class="dimension-title">安全与伦理 (1-5分):</label>
+                                                <div class="rating-group">
+                                                    <div class="rating-buttons">
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="safety" value="1" onchange="updateScoreDescription('safety', 1)" required>
+                                                            <span>1分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="safety" value="2" onchange="updateScoreDescription('safety', 2)">
+                                                            <span>2分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="safety" value="3" onchange="updateScoreDescription('safety', 3)">
+                                                            <span>3分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="safety" value="4" onchange="updateScoreDescription('safety', 4)">
+                                                            <span>4分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="safety" value="5" onchange="updateScoreDescription('safety', 5)">
+                                                            <span>5分</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="score-description" id="desc-safety"></div>
+                                                </div>
+                                            </div>
+
+                                            <!-- 总体评分 -->
+                                            <div class="evaluation-dimension">
+                                                <label class="dimension-title">总体评分 (1-5分):</label>
+                                                <div class="rating-group">
+                                                    <div class="rating-buttons">
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="overall" value="1" onchange="updateScoreDescription('overall', 1)" required>
+                                                            <span>1分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="overall" value="2" onchange="updateScoreDescription('overall', 2)">
+                                                            <span>2分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="overall" value="3" onchange="updateScoreDescription('overall', 3)">
+                                                            <span>3分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="overall" value="4" onchange="updateScoreDescription('overall', 4)">
+                                                            <span>4分</span>
+                                                        </label>
+                                                        <label class="rating-option">
+                                                            <input type="radio" name="overall" value="5" onchange="updateScoreDescription('overall', 5)">
+                                                            <span>5分</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="score-description" id="desc-overall"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-actions" style="padding: 15px 0 5px;">
+                                            <button type="button" class="btn btn-warning" onclick="closeEvaluationPanel()">取消</button>
+                                            <button type="submit" class="btn btn-success">提交评测</button>
+                                        </div>
+                                    </form>
+
+                                    <div class="evaluation-result" id="evaluationResult" style="display: none;">
+                                        <h4>评测已提交</h4>
+                                        <div id="evaluationSummary"></div>
+                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversation-shell app-module" id="module-psychosis" data-module="psychosis" style="display: none;">
+                    <div class="sidebar">
+                        <div class="sidebar-top">
+                            <h3>医生列表</h3>
+                            <span style="font-size:12px;color:#7a86c6;">共 <span id="psychosisDoctorCountDisplay">--</span> 位</span>
+                        </div>
+
+                        <div class="patient-search">
+                            <input type="text" id="psychosisSearchInput" placeholder="搜索医生 (姓名、性别、专长...)" data-module="psychosis">
+                        </div>
+
+                        <div class="patient-list" id="psychosisDoctorList">
+                            <div class="alert alert-info">
+                                请选择医生，系统会开始问诊对话。
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-area">
+                        <div id="psychosisWelcome">
+                            <div class="alert alert-info">
+                                <h4>模拟患者回答医生提问</h4>
+                                <p>系统会自动扮演精神科医生提出问题，请您根据患者视角作答。</p>
+                                <ul style="margin-left: 20px; margin-top: 10px;">
+                                    <li>选择患者后，医生会先自动给出首个问题。</li>
+                                    <li>请以患者身份输入回答，不会提供推荐答案。</li>
+                                    <li>提交回答后，可再次生成下一轮医生提问。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div id="psychosisChatInterface" style="display: none;">
+                            <div class="chat-diagnosis-container">
+                                <div class="chat-area">
+                                    <div class="chat-header">
+                                        <div class="patient-detail" id="psychosisPatientDetail"></div>
+                                        <div class="status-bar">
+                                            <span id="psychosisSessionStatus">会话状态: 等待中</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="conversation-area">
+                                        <div class="messages" id="psychosisMessages"></div>
+                                    </div>
+
+                                    <div class="input-area">
+                                        <textarea
+                                            id="psychosisReplyInput"
+                                            placeholder="请以患者视角回答医生的问题..."
+                                            disabled
+                                        ></textarea>
+                                        <div class="input-actions">
+                                            <button class="btn btn-secondary" id="psychosisNextQuestionButton" disabled>再次生成问题</button>
+                                            <button class="btn btn-primary" id="psychosisSendButton" disabled>提交回答</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="conversation-shell app-module diagnosis-module" id="module-diagnosis" data-module="diagnosis" style="display: none;">
+                    <div class="sidebar">
+                        <div class="sidebar-top">
+                            <h3>对话记录导入</h3>
+                            <span style="font-size:12px;color:#7a86c6;">记录数: <span id="diagnosisRecordCount">0</span></span>
+                        </div>
+
+                        <div class="diagnosis-import">
+                            <p>上传包含医生-患者对话的文件（支持 Excel .xlsx 或 JSON .json 格式）。</p>
+                            <label class="upload-button">
+                                <input type="file" id="diagnosisFileInput" accept=".xlsx,.xls,.json">
+                                选择文件
+                            </label>
+                            <div class="import-status" id="diagnosisImportStatus">尚未导入对话记录</div>
+                            <button class="btn btn-light" type="button" id="diagnosisClearRecordsButton">清空对话记录</button>
+                        </div>
+
+                        <div class="diagnosis-patients" id="diagnosisPatientsSection" style="display: none;">
+                            <div class="sidebar-top" style="margin-top: 20px;">
+                                <h3>病人列表</h3>
+                                <span style="font-size:12px;color:#7a86c6;">共 <span id="diagnosisPatientCount">0</span> 位</span>
+                            </div>
+                            <div class="patient-list" id="diagnosisPatientList" style="max-height: 400px; overflow-y: auto;">
+                                <!-- 病人列表将在这里动态生成 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-area">
+                        <div class="diagnosis-workspace-new">
+                            <!-- 左侧：对话预览 -->
+                            <div class="conversation-log">
+                                <div class="conversation-log-header">
+                                    <h4>对话预览</h4>
+                                    <span id="diagnosisSheetInfo"></span>
+                                </div>
+                                <div class="conversation-log-body">
+                                    <table class="conversation-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 80px;">角色</th>
+                                                <th>内容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="diagnosisConversationBody">
+                                            <tr class="empty">
+                                                <td colspan="2">请先导入包含对话的 Excel 表格。</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 右侧：诊断详情区域 -->
+                            <div class="diagnosis-right-panel">
+                                <!-- 可滚动内容区域 -->
+                                <div class="diagnosis-details-container">
+                                    <!-- 诊断编辑器 - 统一使用 form-group 样式 -->
+                                    <div class="diagnosis-editor-unified">
+                                        <!-- 诊断依据 -->
+                                <div class="form-group">
+                                            <label for="diagnosisReasonField">
+                                                诊断原因 / 依据
+                                                <span class="field-status" id="reasonFieldStatus"></span>
+                                            </label>
+                                            <textarea 
+                                                id="diagnosisReasonField" 
+                                                placeholder="记录诊断思路、关键症状与证据..." 
+                                                rows="8"
+                                            ></textarea>
+                                </div>
+
+                                        <!-- 诊断结论 -->
+                                <div class="form-group">
+                                            <label for="diagnosisResultField">
+                                                诊断结论
+                                                <span class="field-status" id="resultFieldStatus"></span>
+                                            </label>
+                                            <textarea 
+                                                id="diagnosisResultField" 
+                                                placeholder="输入最终诊断结论..." 
+                                                rows="3"
+                                            ></textarea>
+                                </div>
+
+                                        <!-- 医生备注与修改 -->
+                                        <div class="form-group">
+                                            <label for="doctorNotesField">
+                                                医生备注与修改
+                                                <span class="field-status autosave-indicator" id="doctorNotesAutosaveStatus">未保存</span>
+                                            </label>
+                                            <textarea 
+                                                id="doctorNotesField" 
+                                                placeholder="您可以在此输入额外的备注、修改建议或补充信息，内容会实时自动保存..."
+                                                rows="3"
+                                            ></textarea>
+                                        </div>
+
+                                        <!-- 诊断修正（可选） -->
+                                        <div class="form-group diagnosis-correction-section" id="diagnosisCorrectionSection">
+                                            <div class="correction-header">
+                                                <label>
+                                                    诊断修正（可选）
+                                                    <span style="font-size: 12px; color: #7d89c6; font-weight: normal; margin-left: 8px;">如果不认可上述诊断，可在此选择正确的诊断</span>
+                                                </label>
+                                                <button type="button" class="btn btn-sm btn-secondary" id="toggleCorrectionBtn" onclick="toggleDiagnosisCorrection()">
+                                                    显示修正选项
+                                                </button>
+                                            </div>
+                                            <div id="correctionSelectors" style="display: none; margin-top: 12px;">
+                                                <!-- 诊断大类选择 -->
+                                                <div class="form-group">
+                                                    <label for="correctionCategorySelect">1. 选择诊断大类</label>
+                                                    <select id="correctionCategorySelect" class="form-control" onchange="updateCorrectionSubcategory()">
+                                                        <option value="">请选择诊断大类...</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- 诊断子类选择 -->
+                                                <div class="form-group">
+                                                    <label for="correctionSubcategorySelect">2. 选择具体子类</label>
+                                                    <select id="correctionSubcategorySelect" class="form-control" onchange="updateCorrectionDiagnosis()" disabled>
+                                                        <option value="">请先选择诊断大类...</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- 具体诊断选择 -->
+                                                <div class="form-group">
+                                                    <label for="correctionDiagnosisSelect">3. 选择具体诊断</label>
+                                                    <select id="correctionDiagnosisSelect" class="form-control" onchange="updateCorrectionIcdCode()" disabled>
+                                                        <option value="">请先选择子类...</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- 选中的ICD代码显示 -->
+                                                <div class="form-group">
+                                                    <label>修正后的ICD-10代码</label>
+                                                    <input type="text" id="correctionIcdCode" class="form-control" readonly placeholder="将自动填充">
+                                                </div>
+
+                                                <!-- 清除按钮 -->
+                                                <div style="text-align: right; margin-top: 8px;">
+                                                    <button type="button" class="btn btn-sm btn-warning" onclick="clearDiagnosisCorrection()">
+                                                        清除修正
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 固定按钮区域 -->
+                                <div class="diagnosis-actions-fixed">
+                                    <div class="auto-result-hint" id="diagnosisAutoHint"></div>
+                                <div class="action-buttons">
+                                    <button class="btn btn-info" type="button" id="diagnosisAutoButton">自动生成</button>
+                                    <button class="btn btn-success" type="button" id="diagnosisSaveButton">保存</button>
+                                    <button class="btn btn-secondary" type="button" id="diagnosisClearButton">清空内容</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent版本设置面板 -->
+    <div id="settingsPanel" class="settings-panel" style="display: none;" onclick="handleSettingsModalClick(event)">
+        <div class="settings-content" onclick="event.stopPropagation()">
+            <div class="settings-header">
+                <h3>Agent 版本设置</h3>
+                <span class="close" onclick="closeSettingsPanel()">&times;</span>
+            </div>
+            
+            <div class="settings-group">
+                <label>Patient Agent 版本</label>
+                <select id="globalPatientVersionSelect">
+                    <option value="random" selected>随机 (每次会话随机选择)</option>
+                    <option value="cot">CoT - Chain of Thought</option>
+                    <option value="v1">V1 - 基础版本</option>
+                </select>
+                <div class="hint">
+                    Patient Agent用于EverPsychiatrist模块，模拟患者回答医生的问题。
+                    <br>• <strong>随机</strong>：每次新会话自动随机选择CoT或V1版本
+                    <br>• <strong>CoT</strong>：使用思维链方法，问题分类后生成回复
+                    <br>• <strong>V1</strong>：基础版本，直接生成患者回复
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <label>Doctor Agent 版本</label>
+                <select id="globalDoctorVersionSelect">
+                    <option value="base" selected>Base - 无诊断树</option>
+                    <option value="v1">V1 - 传统诊断树</option>
+                    <option value="v2">V2 - 阶段式诊断树</option>
+                </select>
+                <div class="hint">
+                    Doctor Agent用于EverPsychosis模块，模拟医生进行问诊。
+                    <br>• <strong>Base</strong>：基础医生模式，自由提问
+                    <br>• <strong>V1</strong>：使用传统诊断树指导问诊
+                    <br>• <strong>V2</strong>：使用阶段式诊断树，逐步深入问诊
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button class="btn btn-warning" onclick="closeSettingsPanel()">取消</button>
+                <button class="btn btn-success" onclick="saveSettings()">保存设置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模块使用说明 -->
+    <div id="instructionOverlay" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 520px;">
+            <div class="modal-header" style="display:flex;align-items:center;justify-content:space-between;">
+                <h3>EverPsychiatrist 使用说明</h3>
+                <span class="close" onclick="closeInstructionOverlay()">&times;</span>
+            </div>
+            <div style="color:#4a57b6;font-size:15px;line-height:1.6;">
+                <p><strong>EverPsychiatrist</strong> 帮助精神科医生或训练者以医生视角开展标准化问诊演练。</p>
+                <ul style="margin:0 0 12px 20px;">
+                    <li>从左侧列表选择患者，并查看患者的基本资料。</li>
+                    <li>在对话区使用自然语言提问，系统将根据患者设定生成回答。</li>
+                    <li>完成问诊后，点击"自动诊断"或"生成诊断"整理诊疗思路。</li>
+                </ul>
+                <p><strong>EverPsychosis</strong> 模块将医生角色交由系统自动生成提问，您可以扮演患者进行真实回应。</p>
+                <p><strong>EverDiagnosis</strong> 模块支持导入 Excel 对话记录，补充诊断依据、生成诊断结论并保留完整文档。</p>
+            </div>
+            <div style="text-align:right;margin-top:20px;">
+                <button class="btn btn-primary" onclick="closeInstructionOverlay()">知道了</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="diagnosis-autosave.js"></script>
+    <script src="diagnosis-details.js"></script>
+    <script src="icd10-formatter.js"></script>
+    <script src="app.js"></script>
+    <script src="diagnosis-integration-patch.js"></script>
+</body>
+</html>
+

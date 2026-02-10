@@ -1,0 +1,14 @@
+{
+  "Shihao": {
+    "salt": "a585ae7468e8b89a5f4a57cb59ea620c",
+    "password_hash": "94c78a6ecb7ff272b2f4ea3a7490e44d1bee434132f3d1ef8bc13262e36b1ea7"
+  },
+  "test_user": {
+    "salt": "a85e031252cbd4aaf75534455b129d01",
+    "password_hash": "aefd1d0d81d6792e3a84bbc57adcfe97ee858d70528ba23fb9f758ce2a434441"
+  },
+  "debug_test": {
+    "salt": "f44d919165c046b51fea29e4b9282947",
+    "password_hash": "4e4f7b26787ec2ee787bda0d6ed921f5d2b9b0a6c2efaf5a9f0011f23244d64d"
+  }
+}

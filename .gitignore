@@ -1,0 +1,18 @@
+# Python 字节码
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 虚拟环境
+venv/
+.venv/
+env/
+
+# 环境变量文件
+.env
+
+# 编辑器配置
+.vscode/
+.idea/raw_data/

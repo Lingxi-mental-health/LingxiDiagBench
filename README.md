@@ -12,7 +12,6 @@
   <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-Latest-26A69A?style=flat-square&logo=fastapi&logoColor=white" />
   <img alt="OpenAI" src="https://img.shields.io/badge/OpenAI-Compatible-412991?style=flat-square&logo=openai&logoColor=white" />
   <a href="https://huggingface.co/datasets/XuShihao6715/LingxiDiag-16k"><img alt="Dataset" src="https://img.shields.io/badge/🤗%20Dataset-LingxiDiag--16K-FFD21E?style=flat-square" /></a>
-  <a href="https://arxiv.org/abs/2602.09379"><img alt="arXiv" src="https://img.shields.io/badge/arXiv-2602.09379-B31B1B?style=flat-square&logo=arxiv&logoColor=white" /></a>
 </p>
 
 <p>
@@ -25,7 +24,7 @@
 
 ## 📖 Overview
 
-**[LingxiDiagBench](https://www.arxiv.org/abs/2602.09379)** is a comprehensive benchmark for evaluating LLM-based psychiatric diagnosis capabilities. It provides both static (fixed dialogue) and dynamic (real-time interaction) evaluation protocols, enabling systematic assessment of AI-assisted diagnostic decision support systems.
+**LingxiDiagBench** is a comprehensive benchmark for evaluating LLM-based psychiatric diagnosis capabilities. It provides both static (fixed dialogue) and dynamic (real-time interaction) evaluation protocols, enabling systematic assessment of AI-assisted diagnostic decision support systems.
 
 <div align="center">
   <img src="doc/Benchmark_structure.png" alt="LingxiDiagBench Architecture" width="90%">
@@ -314,13 +313,11 @@ OPENROUTER_DOCTOR_MODEL=google/gemini-3-flash-preview
 If you use LingxiDiagBench in your research, please cite our paper:
 
 ```bibtex
-@misc{xu2026lingxidiagbench,
+@article{lingxidiagbench2026,
   title={LingxiDiagBench: A Multi-Agent Framework for Benchmarking LLMs in Chinese Psychiatric Consultation and Diagnosis},
   author={Shihao Xu et al.},
-  year={2026},
-  eprint={2602.09379},
-  archivePrefix={arXiv},
-  primaryClass={cs.MA}
+  journal={arXiv preprint},
+  year={2026}
 }
 ```
 

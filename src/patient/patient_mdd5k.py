@@ -96,7 +96,10 @@ class Patient(llm_tools_api.PatientCost):
             if self.dialbegin:
                 self.patientbot_init()
                 self.dialbegin = False
-            
+
+            # 重置 messages 列表，只保留 system prompt，避免跨请求累积
+            self.messages = [{"role": "system", "content": self.system_prompt}]
+
             # 过滤掉处理意见字段
             patient_template = {key:val for key, val in self.patient_template.items() if key not in ('处理意见', 'Treatment')}
             

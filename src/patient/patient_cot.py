@@ -294,12 +294,15 @@ class Patient(llm_tools_api.PatientCost):
         """外部CoT：两步生成患者回复"""
         classification_info = None
         patient_reasoning = ""  # 患者响应的reasoning
-        
+
         if self.use_api:
             if self.dialbegin:
                 self.patientbot_init()
                 self.dialbegin = False
-                
+
+            # 重置 messages 列表，只保留 system prompt，避免跨请求累积
+            self.messages = [{"role": "system", "content": self.system_prompt}]
+
             patient_template = {key: val for key, val in self.patient_template.items() if key != '处理意见'}
 
             # 第一步：问题分类

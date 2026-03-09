@@ -91,11 +91,15 @@ class Patient(llm_tools_api.PatientCost):
     def patient_response_gen(self, current_topic, dialogue_history, current_doctor_question):
         # self.messages.append({"role": "user", "content": doctor_response})
         patient_reasoning = ""  # 初始化reasoning变量
-        
+
         if self.use_api:
             if self.dialbegin:
                 self.patientbot_init()
                 self.dialbegin = False
+
+            # 重置 messages 列表，只保留 system prompt，避免跨请求累积
+            self.messages = [{"role": "system", "content": self.system_prompt}]
+
             patient_template = {key:val for key, val in self.patient_template.items() if key != '处理意见'} 
 
             # 检查是否需要说出辅助检查和量表信息

@@ -14,7 +14,7 @@ def extract_answer_and_reasoning(chat_response):
     从API响应中分离输出与reasoning，兼容多种形式：
     1) reasoning_content / reasoning 字段
     2) 文本中的 <think>...</think> 标签
-    3) \\no_think 模式下 content 为空，内容在 reasoning_content 中
+    3) /nothink 模式下 content 为空，内容在 reasoning_content 中
     4) Baichuan-M3 等返回为 dict/JSON 的响应格式
     """
     
@@ -33,7 +33,7 @@ def extract_answer_and_reasoning(chat_response):
         if not reasoning:
             reasoning = parsed_reasoning
 
-    # 特殊情况：\\no_think 模式下，content 为空但 reasoning_content 有内容
+    # 特殊情况：/nothink 模式下，content 为空但 reasoning_content 有内容
     # 此时 reasoning_content 实际上是模型的回复内容
     if not raw_content and reasoning:
         clean_content, _ = strip_think_tags(reasoning)
@@ -140,8 +140,8 @@ def is_reasoning_enabled(agent: str, default: bool = True) -> bool:
 
 
 def _add_no_think_prefix(system_prompt: str) -> str:
-    """在system prompt前添加\\no_think以显式关闭reasoning。"""
-    prefix = "\\no_think"
+    """在system prompt前添加/nothink以显式关闭reasoning。"""
+    prefix = "/nothink"
     if system_prompt.lstrip().startswith(prefix):
         return system_prompt
     return f"{prefix}\n{system_prompt}"
@@ -206,7 +206,7 @@ def is_reasoning_required_model(model_name: str) -> bool:
 
 def should_add_no_think_prefix(model_name: str, use_openrouter: bool, reasoning_enabled: bool) -> bool:
     """
-    是否需要在system prompt前添加\\no_think以关闭reasoning。
+    是否需要在system prompt前添加/nothink以关闭reasoning。
     - reasoning开关关闭时才考虑添加
     - 离线部署，或OpenRouter模型名称包含qwen3 时启用该前缀
     - 强制 reasoning 模型不添加该前缀
@@ -222,7 +222,7 @@ def should_add_no_think_prefix(model_name: str, use_openrouter: bool, reasoning_
 
 
 def apply_reasoning_prompt_prefix(system_prompt: str, model_name: str, use_openrouter: bool, reasoning_enabled: bool) -> str:
-    """根据配置在system prompt前添加\\no_think前缀（如需禁用reasoning）。"""
+    """根据配置在system prompt前添加/nothink前缀（如需禁用reasoning）。"""
     if should_add_no_think_prefix(model_name, use_openrouter, reasoning_enabled):
         return _add_no_think_prefix(system_prompt)
     return system_prompt

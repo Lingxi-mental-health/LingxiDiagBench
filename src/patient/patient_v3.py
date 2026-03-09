@@ -346,11 +346,15 @@ class Patient(llm_tools_api.PatientCost):
 
     def patient_response_gen(self, current_topic, dialogue_history, current_doctor_question=None):
         patient_reasoning = ""  # 初始化reasoning变量
-        
+
         if self.dialbegin:
             self.patientbot_init()
             self.dialbegin = False
-        
+
+        # 重置 messages 列表，只保留 system prompt，避免跨请求累积
+        # 这是关键修复：Patient 实例被缓存复用时，messages 会不断增长
+        self.messages = [{"role": "system", "content": self.system_prompt}]
+
         # 根据 ICD 编码采样回复长度
         length_bin, target_length = sample_patient_avg_chars(self.icd_codes)
         
@@ -369,7 +373,19 @@ class Patient(llm_tools_api.PatientCost):
         "**当前医生问题**：{}{}\n"
         "按核心规则要求, 生成你对当前医生问题的回答："
         ).format(self.patient_info, self.chat_history, dialogue_history, current_doctor_question, length_hint)
-        
+
+        # DEBUG: 输出消息长度帮助定位问题
+        total_chars = len(self.system_prompt) + sum(len(m.get('content', '')) for m in self.messages) + len(patient_prompt)
+        if total_chars > 15000:  # 超过15000字符时输出警告
+            print(f"[Patient V3] WARNING: 消息总长度过大!")
+            print(f"  - system_prompt: {len(self.system_prompt)} 字符")
+            print(f"  - messages历史: {len(self.messages)} 条, {sum(len(m.get('content', '')) for m in self.messages)} 字符")
+            print(f"  - patient_info: {len(self.patient_info)} 字符")
+            print(f"  - chat_history: {len(self.chat_history)} 字符")
+            print(f"  - dialogue_history: {len(str(dialogue_history))} 字符")
+            print(f"  - patient_prompt: {len(patient_prompt)} 字符")
+            print(f"  - 总计: {total_chars} 字符 (约 {total_chars} tokens)")
+
         self.messages.append({"role": "user", "content": patient_prompt})
         chat_response = self.client.chat.completions.create(
                 model=self.api_model_name,  # 使用纯模型名，不包含@host:port

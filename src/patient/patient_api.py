@@ -282,20 +282,45 @@ async def get_or_create_patient(patient_id: str, model_name: str, patient_versio
             detail=f"创建Patient实例失败: {str(e)}"
         )
 
-def extract_dialogue_history(messages: List[Message]) -> list:
-    """从OpenAI格式的messages提取对话历史"""
+def extract_dialogue_history(messages: List[Message], max_chars: int = 8000) -> list:
+    """
+    从OpenAI格式的messages提取对话历史
+
+    Args:
+        messages: OpenAI格式的消息列表
+        max_chars: 最大字符数限制（防止上下文过长导致500错误）
+    """
     dialogue_history = []
-    
-    for msg in messages:
+    total_chars = 0
+
+    # 从后往前遍历，保留最新的对话
+    for msg in reversed(messages):
         if msg.role == "system":
             continue  # 跳过system消息
-        elif msg.role == "user":
-            # 假设user是医生
-            dialogue_history.append(f"医生: {msg.content}")
+
+        content = msg.content
+        msg_chars = len(content)
+
+        # 检查是否超过限制
+        if total_chars + msg_chars > max_chars:
+            # 如果是第一条消息（最新的），至少保留一部分
+            if not dialogue_history:
+                remaining = max_chars - total_chars
+                if remaining > 100:
+                    content = content[-remaining:]  # 保留末尾
+                    if msg.role == "user":
+                        dialogue_history.insert(0, f"医生: ...{content}")
+                    else:
+                        dialogue_history.insert(0, f"患者本人: ...{content}")
+            break
+
+        if msg.role == "user":
+            dialogue_history.insert(0, f"医生: {content}")
         elif msg.role == "assistant":
-            # 假设assistant是患者
-            dialogue_history.append(f"患者本人: {msg.content}")
-    
+            dialogue_history.insert(0, f"患者本人: {content}")
+
+        total_chars += msg_chars
+
     return dialogue_history
 
 def get_current_doctor_question(messages: List[Message]) -> str:
@@ -496,6 +521,20 @@ async def patient_chat(request: PatientRequest):
     dialogue_history = extract_dialogue_history(request.messages)
     current_doctor_question = get_current_doctor_question(request.messages)
     current_topic = request.current_topic or "患者的精神状况"
+
+    # DEBUG: 输出传入消息的长度，帮助定位 500 错误
+    total_msg_chars = sum(len(m.content) for m in request.messages)
+    if total_msg_chars > 10000 or len(request.messages) > 20:
+        print(f"[Patient API] WARNING: 传入消息过长!")
+        print(f"  - patient_id: {request.patient_id}")
+        print(f"  - messages数量: {len(request.messages)}")
+        print(f"  - messages总字符: {total_msg_chars}")
+        print(f"  - dialogue_history长度: {len(str(dialogue_history))}")
+        # 检查是否有重复消息
+        msg_contents = [m.content for m in request.messages]
+        unique_contents = set(msg_contents)
+        if len(unique_contents) < len(msg_contents):
+            print(f"  - 发现重复消息! 唯一消息: {len(unique_contents)}, 总消息: {len(msg_contents)}")
     
     # 5. 调用Patient生成回复（放入线程池，避免阻塞事件循环）
     try:

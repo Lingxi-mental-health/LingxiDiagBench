@@ -338,9 +338,13 @@ deploy_vllm() {
     cmd="$cmd --max-model-len $MAX_MODEL_LEN"
     cmd="$cmd --dtype bfloat16"
     
-    # 对于非 qwen2.5 和 gpt-oss 模型，添加 reasoning parser
+    # 根据模型类型添加 reasoning parser
     local model_lower=$(echo "$model_name" | tr '[:upper:]' '[:lower:]')
-    if [[ "$model_lower" != *"qwen2.5"* ]] && [[ "$model_lower" != *"gpt-oss"* ]]; then
+    if [[ "$model_lower" == *"qwen3.5"* ]]; then
+        # Qwen3.5 系列使用 qwen3 parser
+        cmd="$cmd --reasoning-parser qwen3"
+    elif [[ "$model_lower" != *"qwen2.5"* ]] && [[ "$model_lower" != *"gpt-oss"* ]]; then
+        # 其他推理模型（非 qwen2.5 和 gpt-oss）使用 deepseek_r1 parser
         cmd="$cmd --reasoning-parser deepseek_r1"
     fi
     

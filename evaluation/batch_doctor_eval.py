@@ -138,7 +138,13 @@ class VLLMServer:
         if os.path.exists(config_file):
             with open(config_file, "r") as f:
                 config = json.load(f)
-            num_attention_heads = config["num_attention_heads"]
+            # 支持两种配置格式:
+            # 1. 旧格式: num_attention_heads 在根级别 (Qwen2.5, etc.)
+            # 2. 新格式: num_attention_heads 在 text_config 下 (Qwen3.5)
+            if "num_attention_heads" in config:
+                num_attention_heads = config["num_attention_heads"]
+            elif "text_config" in config and "num_attention_heads" in config["text_config"]:
+                num_attention_heads = config["text_config"]["num_attention_heads"]
         
         if num_attention_heads is not None and num_attention_heads % self.tensor_parallel_size != 0:
             # # reset tensor_parallel_size to lageest number that is divisible by num_attention_heads

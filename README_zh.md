@@ -12,10 +12,11 @@
   <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-Latest-26A69A?style=flat-square&logo=fastapi&logoColor=white" />
   <img alt="OpenAI" src="https://img.shields.io/badge/OpenAI-Compatible-412991?style=flat-square&logo=openai&logoColor=white" />
   <a href="https://huggingface.co/datasets/XuShihao6715/LingxiDiag-16k"><img alt="Dataset" src="https://img.shields.io/badge/🤗%20Dataset-LingxiDiag--16K-FFD21E?style=flat-square" /></a>
+  <a href="https://arxiv.org/abs/2602.09379v1"><img alt="Paper" src="https://img.shields.io/badge/📄%20arXiv-2602.09379-B31B1B?style=flat-square" /></a>
 </p>
 
 <p>
-  <a href="README.md">English</a> | <a href="README_zh.md">简体中文</a>
+  <a href="https://arxiv.org/abs/2602.09379v1">📄 Paper</a> | <a href="README.md">English</a> | <a href="README_zh.md">简体中文</a>
 </p>
 
 </div>
@@ -312,10 +313,10 @@ OPENROUTER_DOCTOR_MODEL=google/gemini-3-flash-preview
 如果您在研究中使用了 LingxiDiagBench，请引用我们的论文：
 
 ```bibtex
-@article{lingxidiagbench2026,
+@article{xu2026lingxidiagbench,
   title={LingxiDiagBench: A Multi-Agent Framework for Benchmarking LLMs in Chinese Psychiatric Consultation and Diagnosis},
   author={Shihao Xu et al.},
-  journal={arXiv preprint},
+  journal={arXiv preprint arXiv:2602.09379},
   year={2026}
 }
 ```

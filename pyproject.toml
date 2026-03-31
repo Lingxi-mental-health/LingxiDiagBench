@@ -13,7 +13,7 @@ dependencies = [
     # ==================== 机器学习 ====================
     "scikit-learn>=1.0.0",
     # ==================== 深度学习框架 ====================
-    "torch>=1.10.0",
+    "torch>=2.6.0",  # Updated for CUDA 12.8 compatibility
     "transformers>=4.20.0",
     "sentence-transformers>=2.2.0",
     # ==================== NLP工具 ====================
@@ -55,7 +55,7 @@ dependencies = [
 [project.optional-dependencies]
 # GPU版本的PyTorch (用于GPU加速)
 cuda = [
-    "torch>=1.10.0",
+    "torch>=2.6.0",  # Updated for CUDA 12.8 compatibility
 ]
 
 # 开发依赖

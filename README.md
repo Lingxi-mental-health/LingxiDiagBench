@@ -13,11 +13,14 @@
   <img alt="OpenAI" src="https://img.shields.io/badge/OpenAI-Compatible-412991?style=flat-square&logo=openai&logoColor=white" />
   <a href="https://huggingface.co/datasets/XuShihao6715/LingxiDiag-16k"><img alt="Dataset" src="https://img.shields.io/badge/🤗%20Dataset-LingxiDiag--16K-FFD21E?style=flat-square" /></a>
   <a href="https://arxiv.org/abs/2602.09379v1"><img alt="Paper" src="https://img.shields.io/badge/📄%20arXiv-2602.09379-B31B1B?style=flat-square" /></a>
+  <img alt="KDD 2026" src="https://img.shields.io/badge/🎉%20Accepted-KDD%202026-1E90FF?style=flat-square" />
 </p>
 
 <p>
   <a href="https://arxiv.org/abs/2602.09379v1">📄 Paper</a> | <a href="README.md">English</a> | <a href="README_zh.md">简体中文</a>
 </p>
+
+<p><strong>🎉 News:</strong> LingxiDiagBench has been accepted to <strong>KDD 2026</strong>!</p>
 
 </div>
 

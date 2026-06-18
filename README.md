@@ -288,7 +288,7 @@ LingxiDiagBench/
 # Format: ModelName@IP:PORT
 OFFLINE_DOCTOR_MODEL=Qwen3-32B
 OFFLINE_DOCTOR_PORTS=9040
-VLLM_DOCTOR_IP=10.119.16.100
+VLLM_DOCTOR_IP=your_vllm_server_ip
 
 # === OpenRouter API ===
 OPENROUTER_API_KEY=sk-or-v1-your-key
